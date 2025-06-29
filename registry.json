@@ -18,7 +18,7 @@
         ],
         "files": [
           {
-            "path": "registry/new-york/mode-toggle/mode-toggle.tsx",
+            "path": "registry/mode-toggle/mode-toggle.tsx",
             "type": "registry:component"
           }
         ]
