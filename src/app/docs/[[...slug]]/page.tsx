@@ -5,6 +5,7 @@ import {
   DocsDescription,
   DocsTitle,
 } from 'fumadocs-ui/page';
+import { getGithubLastEdit } from 'fumadocs-core/server';
 import { notFound } from 'next/navigation';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import { getMDXComponents } from '@/mdx-components';
@@ -18,8 +19,21 @@ export default async function Page(props: {
 
   const MDXContent = page.data.body;
 
+  const time = await getGithubLastEdit({
+    owner: 'fuma-nama',
+    repo: 'fumadocs',
+    path: `content/docs/${page.path}`,
+  });
+
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage 
+      toc={page.data.toc} 
+      full={page.data.full}   
+      tableOfContent={{
+        style: 'clerk',
+      }}
+      lastUpdate={time ? new Date(time) : undefined} 
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>

@@ -1,13 +1,26 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-interface OpenInV0ButtonProps {
+export interface OpenInV0ButtonProps {
+  /** The URL to the component JSON file that will be opened in v0 */
   url: string;
+  /** Optional title that will be passed to v0 for context */
   title?: string;
+  /** Optional prompt that will be passed to v0 for additional context */
   prompt?: string;
+  /** 
+   * The visual style variant of the button
+   * @default "outline"
+   */
+  buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  /** 
+   * The size of the button
+   * @default "sm"
+   */
+  buttonSize?: "default" | "sm" | "lg" | "icon";
 }
 
-export function OpenInV0Button({ url, title, prompt }: OpenInV0ButtonProps) {
+export function OpenInV0Button({ url, title, prompt, buttonVariant = "outline", buttonSize = "sm" }: OpenInV0ButtonProps) {
   const buildV0Url = () => {
     const params = new URLSearchParams();
     params.append('url', url);
@@ -28,13 +41,16 @@ export function OpenInV0Button({ url, title, prompt }: OpenInV0ButtonProps) {
       aria-label="Open in v0"
       className=""
       asChild
+      variant={buttonVariant}
+      size={buttonSize}
     >
       <Link
         href={buildV0Url()}
         target="_blank"
         rel="noreferrer"
+        className="no-underline text-sm font-normal"
       >
-        Open in
+        {buttonSize === "icon" ? null : "Open in"}
         <svg
           viewBox="0 0 40 20"
           fill="none"
