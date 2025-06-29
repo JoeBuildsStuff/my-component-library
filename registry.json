@@ -1,7 +1,7 @@
 {
     "$schema": "https://ui.shadcn.com/schema/registry.json",
     "name": "my-component-library",
-    "homepage": "https://yoursite.com",
+    "homepage": "https://my-component-library-woad.vercel.app/",
     "items": [
       {
         "name": "mode-toggle",
