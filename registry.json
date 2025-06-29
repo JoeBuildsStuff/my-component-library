@@ -36,6 +36,11 @@
             "path": "registry/mode-toggle/globals.css",
             "type": "registry:file",
             "target": "app/globals.css"
+          },
+          {
+            "path": "registry/mode-toggle/page.tsx",
+            "type": "registry:page",
+            "target": "app/page.tsx"
           }
         ]
       },
