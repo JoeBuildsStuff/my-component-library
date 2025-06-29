@@ -20,8 +20,8 @@ export default async function Page(props: {
   const MDXContent = page.data.body;
 
   const time = await getGithubLastEdit({
-    owner: 'fuma-nama',
-    repo: 'fumadocs',
+    owner: 'JoeBuildsStuff',
+    repo: 'my-component-library',
     path: `content/docs/${page.path}`,
   });
 

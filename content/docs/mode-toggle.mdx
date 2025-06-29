@@ -1,0 +1,70 @@
+---
+title: Mode Toggle
+description: A toggle to switch between light and dark mode
+---
+
+import { ModeToggle } from "@/components/mode-toggle";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+
+## Preview
+
+<Card className="items-center justify-center min-h-[350px] bg-background shadow-none">
+    <ModeToggle />
+</Card>
+
+## Installation
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the button'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/mode-toggle
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/mode-toggle
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/mode-toggle
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/mode-toggle
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import { ModeToggle } from "@/components/mode-toggle"
+```
+
+```tsx
+<ModeToggle />
+```
+
+## Props
+
+<AutoTypeTable path="./src/components/mode-toggle.tsx" name="ModeToggleProps" />
+
+## Examples
+
+### Change the Dropdown Menu Alignment
+
+The dropdown menu can be aligned to the start, center, or end of the button.  This is useful when you want to ensure the dropdown menu is visible on the screen when the button is at the edge of the screen.
+
+<Card className="min-h-[350px] bg-background shadow-none flex flex-row gap-4 justify-between p-4 items-start pt-[116px]">
+<div className="flex flex-col gap-3 items-start">
+  <Label htmlFor="start-toggle" className="text-sm text-muted-foreground">Start</Label>
+  <ModeToggle align="start" />
+</div>
+<div className="flex flex-col gap-3 items-center">
+  <Label htmlFor="center-toggle" className="text-sm text-muted-foreground">Center</Label>
+  <ModeToggle align="center" />
+</div>
+<div className="flex flex-col gap-3 items-end">
+  <Label htmlFor="end-toggle" className="text-sm text-muted-foreground">End</Label>
+  <ModeToggle align="end" />
+</div>
+</Card>

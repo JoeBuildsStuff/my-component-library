@@ -15,7 +15,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-interface ModeToggleProps {
+export interface ModeToggleProps {
+  /** 
+   * The alignment of the dropdown menu content
+   * @default "center"
+   */
   align?: "start" | "end" | "center"
 }
 

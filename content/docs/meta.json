@@ -1,6 +1,10 @@
 {
   "pages": [
+    "---Introduction---",
     "index",
-    "..."
+    "---Components---",
+    "buttons",
+    "---Blocks---",
+    "mode-toggle"
   ]
 } 
