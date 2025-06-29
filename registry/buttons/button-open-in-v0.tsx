@@ -5,11 +5,9 @@ interface OpenInV0ButtonProps {
   url: string;
   title?: string;
   prompt?: string;
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
-  size?: "default" | "sm" | "lg" | "icon";
 }
 
-export function OpenInV0Button({ url, title, prompt, variant = "outline", size = "sm" }: OpenInV0ButtonProps) {
+export function OpenInV0Button({ url, title, prompt }: OpenInV0ButtonProps) {
   const buildV0Url = () => {
     const params = new URLSearchParams();
     params.append('url', url);
@@ -30,15 +28,13 @@ export function OpenInV0Button({ url, title, prompt, variant = "outline", size =
       aria-label="Open in v0"
       className=""
       asChild
-      variant={variant}
-      size={size}
     >
       <Link
         href={buildV0Url()}
         target="_blank"
         rel="noreferrer"
       >
-        {size === "icon" ? null : "Open in"}
+        Open in
         <svg
           viewBox="0 0 40 20"
           fill="none"

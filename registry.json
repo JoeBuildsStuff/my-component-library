@@ -20,6 +20,28 @@
           {
             "path": "registry/mode-toggle/mode-toggle.tsx",
             "type": "registry:component"
+          },
+          {
+            "path": "registry/mode-toggle/theme-provider.tsx",
+            "type": "registry:component"
+          }
+        ]
+      },
+      {
+        "name": "button-open-in-v0",
+        "type": "registry:component",
+        "title": "Open in v0",
+        "description": "A button to open a component in v0.",
+        "dependencies": [
+          "next/link"
+        ],
+        "registryDependencies": [
+          "button"
+        ],
+        "files": [
+          {
+            "path": "registry/buttons/button-open-in-v0.tsx",
+            "type": "registry:component"
           }
         ]
       }
