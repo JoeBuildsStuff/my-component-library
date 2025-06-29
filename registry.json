@@ -1,0 +1,27 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry.json",
+    "name": "my-component-library",
+    "homepage": "https://yoursite.com",
+    "items": [
+      {
+        "name": "mode-toggle",
+        "type": "registry:component",
+        "title": "Mode Toggle",
+        "description": "A theme toggle component with dropdown menu for light, dark, and system modes.",
+        "dependencies": [
+          "next-themes",
+          "lucide-react"
+        ],
+        "registryDependencies": [
+          "button",
+          "dropdown-menu"
+        ],
+        "files": [
+          {
+            "path": "registry/new-york/mode-toggle/mode-toggle.tsx",
+            "type": "registry:component"
+          }
+        ]
+      }
+    ]
+  }
