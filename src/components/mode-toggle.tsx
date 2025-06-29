@@ -1,19 +1,26 @@
 'use client'
 
 import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import { LaptopMinimal, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export function ModeToggle() {
-  const { setTheme } = useTheme()
+interface ModeToggleProps {
+  align?: "start" | "end" | "center"
+}
+
+export function ModeToggle({ align = "center" }: ModeToggleProps) {
+  const { theme, setTheme } = useTheme()
 
   return (
     <DropdownMenu>
@@ -24,16 +31,23 @@ export function ModeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+      <DropdownMenuContent align={align} className="w-56">
+        <DropdownMenuLabel>Theme</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+          <DropdownMenuRadioItem value="light" className="flex items-center gap-2 justify-between">
+            <span className="text-sm">Light</span>
+            <Sun className="h-[1.2rem] w-[1.2rem]" />
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="dark" className="flex items-center gap-2 justify-between">
+            <span className="text-sm">Dark</span>
+            <Moon className="h-[1.2rem] w-[1.2rem]" />
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="system" className="flex items-center gap-2 justify-between">
+            <span className="text-sm">System</span>
+            <LaptopMinimal className="h-[1.2rem] w-[1.2rem]" />
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
