@@ -14,7 +14,8 @@
     {
       "path": "registry/buttons/button-open-in-v0.tsx",
       "content": "import { Button } from \"@/components/ui/button\"\nimport Link from \"next/link\"\n\ninterface OpenInV0ButtonProps {\n  url: string;\n  title?: string;\n  prompt?: string;\n}\n\nexport function OpenInV0Button({ url, title, prompt }: OpenInV0ButtonProps) {\n  const buildV0Url = () => {\n    const params = new URLSearchParams();\n    params.append('url', url);\n    \n    if (title) {\n      params.append('title', title);\n    }\n    \n    if (prompt) {\n      params.append('prompt', prompt);\n    }\n    \n    return `https://v0.dev/chat/api/open?${params.toString()}`;\n  };\n\n  return (\n    <Button\n      aria-label=\"Open in v0\"\n      className=\"\"\n      asChild\n    >\n      <Link\n        href={buildV0Url()}\n        target=\"_blank\"\n        rel=\"noreferrer\"\n      >\n        Open in\n        <svg\n          viewBox=\"0 0 40 20\"\n          fill=\"none\"\n          xmlns=\"http://www.w3.org/2000/svg\"\n          className=\"size-6 text-current\"\n        >\n          <path\n            d=\"M23.3919 0H32.9188C36.7819 0 39.9136 3.13165 39.9136 6.99475V16.0805H36.0006V6.99475C36.0006 6.90167 35.9969 6.80925 35.9898 6.71766L26.4628 16.079C26.4949 16.08 26.5272 16.0805 26.5595 16.0805H36.0006V19.7762H26.5595C22.6964 19.7762 19.4788 16.6139 19.4788 12.7508V3.68923H23.3919V12.7508C23.3919 12.9253 23.4054 13.0977 23.4316 13.2668L33.1682 3.6995C33.0861 3.6927 33.003 3.68923 32.9188 3.68923H23.3919V0Z\"\n            fill=\"currentColor\"\n          ></path>\n          <path\n            d=\"M13.7688 19.0956L0 3.68759H5.53933L13.6231 12.7337V3.68759H17.7535V17.5746C17.7535 19.6705 15.1654 20.6584 13.7688 19.0956Z\"\n            fill=\"currentColor\"\n          ></path>\n        </svg>\n      </Link>\n    </Button>\n  )\n}",
-      "type": "registry:component"
+      "type": "registry:component",
+      "target": "components/button-open-in-v0.tsx"
     }
   ]
 }

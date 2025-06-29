@@ -19,11 +19,13 @@
         "files": [
           {
             "path": "registry/mode-toggle/mode-toggle.tsx",
-            "type": "registry:component"
+            "type": "registry:component",
+            "target": "components/mode-toggle.tsx"
           },
           {
             "path": "registry/mode-toggle/theme-provider.tsx",
-            "type": "registry:component"
+            "type": "registry:component",
+            "target": "components/theme-provider.tsx"
           }
         ]
       },
@@ -41,7 +43,8 @@
         "files": [
           {
             "path": "registry/buttons/button-open-in-v0.tsx",
-            "type": "registry:component"
+            "type": "registry:component",
+            "target": "components/button-open-in-v0.tsx"
           }
         ]
       }
