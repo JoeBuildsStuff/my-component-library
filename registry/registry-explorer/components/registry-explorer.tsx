@@ -4,6 +4,8 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ChevronRight, ChevronDown, File, Folder, FolderOpen, Loader2, AlertCircle, Copy, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { codeToHtml } from 'shiki';
+import { useTheme } from 'next-themes';
 
 // Types
 interface RegistryItem {
@@ -130,6 +132,34 @@ function buildFileTree(files: Array<{ path: string }>): TreeNode {
   return root;
 }
 
+// Helper function to get language from file extension
+function getLanguageFromPath(filePath: string): string {
+  const extension = filePath.split('.').pop()?.toLowerCase();
+  switch (extension) {
+    case 'tsx':
+    case 'jsx':
+      return 'tsx';
+    case 'ts':
+      return 'typescript';
+    case 'js':
+      return 'javascript';
+    case 'css':
+      return 'css';
+    case 'json':
+      return 'json';
+    case 'md':
+    case 'mdx':
+      return 'markdown';
+    case 'html':
+      return 'html';
+    case 'yml':
+    case 'yaml':
+      return 'yaml';
+    default:
+      return 'text';
+  }
+}
+
 // File Explorer Component
 export interface RegistryExplorerProps {
   /** The name of the component to explore */
@@ -141,6 +171,7 @@ export interface RegistryExplorerProps {
 }
 
 export function RegistryExplorer({ componentName, className, defaultSelectedFile }: RegistryExplorerProps) {
+  const { theme, resolvedTheme } = useTheme();
   const [componentData, setComponentData] = useState<RegistryItem | null>(null);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileContent, setFileContent] = useState<string | null>(null);
@@ -149,6 +180,7 @@ export function RegistryExplorer({ componentName, className, defaultSelectedFile
   const [fileLoading, setFileLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [highlightedCode, setHighlightedCode] = useState<string | null>(null);
 
   // Load file content
   const loadFileContent = useCallback(async (filePath: string) => {
@@ -157,8 +189,27 @@ export function RegistryExplorer({ componentName, className, defaultSelectedFile
       setSelectedFile(filePath);
       const content = await fetchFileContent(componentName, filePath);
       setFileContent(content.content);
+      
+      // Highlight code with Shiki
+      const language = getLanguageFromPath(filePath);
+      try {
+        // Determine theme based on current theme
+        const isDark = resolvedTheme === 'dark' || (theme === 'system' && resolvedTheme === 'dark');
+        const shikiTheme = isDark ? 'github-dark' : 'github-light';
+        
+        const highlighted = await codeToHtml(content.content, {
+          lang: language,
+          theme: shikiTheme
+        });
+        setHighlightedCode(highlighted);
+      } catch (highlightError) {
+        console.warn('Failed to highlight code:', highlightError);
+        setHighlightedCode(null);
+      }
     } catch (err) {
-      setFileContent(`// Error loading file: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      const errorMessage = `// Error loading file: ${err instanceof Error ? err.message : 'Unknown error'}`;
+      setFileContent(errorMessage);
+      setHighlightedCode(null);
     } finally {
       setFileLoading(false);
     }
@@ -170,6 +221,7 @@ export function RegistryExplorer({ componentName, className, defaultSelectedFile
       try {
         setLoading(true);
         setError(null);
+        setHighlightedCode(null);
         const data = await fetchComponent(componentName);
         setComponentData(data);
         
@@ -209,6 +261,30 @@ export function RegistryExplorer({ componentName, className, defaultSelectedFile
 
     loadComponent();
   }, [componentName, defaultSelectedFile, loadFileContent]);
+
+  // Re-highlight code when theme changes
+  useEffect(() => {
+    if (selectedFile && fileContent) {
+      const rehighlightCode = async () => {
+        const language = getLanguageFromPath(selectedFile);
+        try {
+          const isDark = resolvedTheme === 'dark' || (theme === 'system' && resolvedTheme === 'dark');
+          const shikiTheme = isDark ? 'github-dark' : 'github-light';
+          
+          const highlighted = await codeToHtml(fileContent, {
+            lang: language,
+            theme: shikiTheme
+          });
+          setHighlightedCode(highlighted);
+        } catch (highlightError) {
+          console.warn('Failed to re-highlight code:', highlightError);
+          setHighlightedCode(null);
+        }
+      };
+      
+      rehighlightCode();
+    }
+  }, [theme, resolvedTheme, selectedFile, fileContent]);
 
   // Build file tree
   const fileTree = useMemo(() => {
@@ -390,11 +466,18 @@ export function RegistryExplorer({ componentName, className, defaultSelectedFile
                     </div>
                     {/* Code content */}
                     <div className="flex-1">
-                      <pre className="p-4 text-sm font-mono leading-relaxed whitespace-pre">
-                        <code>
-                          {fileContent}
-                        </code>
-                      </pre>
+                      {highlightedCode ? (
+                        <div 
+                          className="p-4 text-sm font-mono leading-relaxed [&>pre]:!bg-transparent [&>pre]:!p-0 [&>pre]:!m-0"
+                          dangerouslySetInnerHTML={{ __html: highlightedCode }}
+                        />
+                      ) : (
+                        <pre className="p-4 text-sm font-mono leading-relaxed whitespace-pre">
+                          <code>
+                            {fileContent}
+                          </code>
+                        </pre>
+                      )}
                     </div>
                   </div>
                 </div>
