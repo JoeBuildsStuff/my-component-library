@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logo",
+  "type": "registry:ui",
+  "title": "Logo",
+  "description": "Displays a logo with an icon and text with adaptive theming.",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/logo.tsx",
+      "content": "import { LucideIcon } from \"lucide-react\";\n\ninterface LogoProps {\n  icon: LucideIcon;\n  text: string;\n}\n\nexport default function Logo({ icon: Icon, text }: LogoProps) {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <div className=\"p-1.5 bg-foreground text-background dark:bg-secondary dark:text-foreground rounded-lg\">\n        <Icon className=\"size-5\" />\n      </div>\n      <span className=\"hidden sm:block\">{text}</span>\n    </div>\n  )\n}",
+      "type": "registry:component",
+      "target": "components/ui/logo.tsx"
+    }
+  ]
+}

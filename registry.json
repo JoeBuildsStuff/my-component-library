@@ -79,6 +79,22 @@
             "target": "components/ui/badge.tsx"
           }
         ]
+      },
+      {
+        "name": "logo",
+        "type": "registry:ui",
+        "title": "Logo",
+        "description": "Displays a logo with an icon and text with adaptive theming.",
+        "dependencies": [
+          "lucide-react"
+        ],
+        "files": [
+          {
+            "path": "registry/ui/logo.tsx",
+            "type": "registry:component",
+            "target": "components/ui/logo.tsx"
+          }
+        ]
       }
     ]
   }

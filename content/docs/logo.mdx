@@ -1,0 +1,148 @@
+---
+title: Logo
+description: Displays a logo with an icon and text with adaptive theming
+---
+
+import Logo from "../../registry/ui/logo";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { Zap, Home, Settings, User, Heart, Star, Shield, Rocket, Coffee, Camera } from 'lucide-react';
+
+## Preview
+
+<Card className="items-center justify-center min-h-[350px] bg-background shadow-none">
+    <Logo icon={Zap} text="Acme Inc" />
+</Card>
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/logo.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the logo'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/logo
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/logo
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/logo
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/logo
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import Logo from "@/components/ui/logo"
+import { Zap } from "lucide-react"
+```
+
+```tsx
+<Logo icon={Zap} text="Your Company" />
+```
+
+## Source Code
+
+```tsx title="logo.tsx" lineNumbers
+import { LucideIcon } from "lucide-react";
+
+interface LogoProps {
+  icon: LucideIcon;
+  text: string;
+}
+
+export default function Logo({ icon: Icon, text }: LogoProps) {
+  return (
+    <div className="flex items-center gap-2">
+      <div className="p-1.5 bg-foreground text-background dark:bg-secondary dark:text-foreground rounded-lg">
+        <Icon className="size-5" />
+      </div>
+      <span className="hidden sm:block">{text}</span>
+    </div>
+  )
+}
+```
+
+## File Structure
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <Folder name="ui" defaultOpen>
+      <File name="logo.tsx" />
+    </Folder>
+  </Folder>
+</Files>
+
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `icon` | `LucideIcon` | The Lucide React icon component to display |
+| `text` | `string` | The text to display next to the icon |
+
+## Examples
+
+### Different Icons
+
+The logo component works with any Lucide React icon, making it versatile for different brands and use cases.
+
+<Card className="items-center justify-center min-h-[350px] bg-background shadow-none">
+    <div className="flex flex-col gap-4 items-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <Logo icon={Home} text="HomeBase" />
+            <Logo icon={Settings} text="ConfigCo" />
+            <Logo icon={User} text="ProfilePro" />
+            <Logo icon={Heart} text="LoveLabs" />
+            <Logo icon={Star} text="StarTech" />
+            <Logo icon={Shield} text="SecureInc" />
+        </div>
+    </div>
+</Card>
+
+### Responsive Behavior
+
+The text is hidden on small screens (`hidden sm:block`) and shown on larger screens, making the logo responsive.
+
+<Card className="items-center justify-center min-h-[350px] bg-background shadow-none">
+    <div className="flex flex-col gap-4 items-center">
+        <div className="text-sm text-muted-foreground mb-2">
+            Resize your browser to see the responsive behavior
+        </div>
+        <Logo icon={Rocket} text="SpaceVentures" />
+    </div>
+</Card>
+
+### Dark Mode Adaptation
+
+The logo automatically adapts to light and dark modes with appropriate color schemes.
+
+<Card className="items-center justify-center min-h-[350px] bg-background shadow-none">
+    <div className="flex flex-col gap-4 items-center">
+        <div className="text-sm text-muted-foreground mb-2">
+            Toggle your theme to see the adaptive colors
+        </div>
+        <div className="flex gap-6">
+            <Logo icon={Coffee} text="BrewMaster" />
+            <Logo icon={Camera} text="SnapStudio" />
+        </div>
+    </div>
+</Card>
+
+## Features
+
+- **Icon Integration**: Works seamlessly with any Lucide React icon
+- **Responsive Design**: Text hides on mobile, shows on desktop
+- **Theme Adaptive**: Automatically adapts colors for light and dark modes
+- **Clean Design**: Minimal, professional appearance
+- **Flexible**: Easy to customize and extend
