@@ -57,9 +57,26 @@
         ],
         "files": [
           {
-            "path": "registry/buttons/button-open-in-v0.tsx",
+            "path": "registry/ui/buttons/button-open-in-v0.tsx",
             "type": "registry:component",
             "target": "components/button-open-in-v0.tsx"
+          }
+        ]
+      },
+      {
+        "name": "badge",
+        "type": "registry:ui",
+        "title": "Badge",
+        "description": "Displays a badge or a component that looks like a badge with multiple color variants.",
+        "dependencies": [
+          "@radix-ui/react-slot",
+          "class-variance-authority"
+        ],
+        "files": [
+          {
+            "path": "registry/ui/badge.tsx",
+            "type": "registry:component",
+            "target": "components/ui/badge.tsx"
           }
         ]
       }

@@ -1,0 +1,1211 @@
+---
+description: When the user has updates or questions for the shadcn registry
+globs: 
+alwaysApply: false
+---
+# shadcn/ui Registry Documentation
+
+## Registry
+
+**Run your own component registry.**
+
+> **Note:** This feature is currently experimental. Help us improve it by testing it out and sending feedback. If you have any questions, please reach out to us.
+
+You can use the shadcn CLI to run your own component registry. Running your own registry allows you to distribute your custom components, hooks, pages, and other files to any React project.
+
+**Registry:** Distribute code to any React project.
+
+Registry items are automatically compatible with the shadcn CLI and Open in v0.
+
+## Requirements
+
+You are free to design and host your custom registry as you see fit. The only requirement is that your registry items must be valid JSON files that conform to the registry-item schema specification.
+
+If you'd like to see an example of a registry, we have a template project for you to use as a starting point.
+
+## Getting Started
+
+**Learn how to get setup and run your own component registry.**
+
+This guide will walk you through the process of setting up your own component registry.
+
+It assumes you already have a project with components and would like to turn it into a registry.
+
+If you're starting a new registry project, you can use the registry template as a starting point. We have already configured it for you.
+
+### registry.json
+
+The `registry.json` file is only required if you're using the shadcn CLI to build your registry.
+
+If you're using a different build system, you can skip this step as long as your build system produces valid JSON files that conform to the registry-item schema specification.
+
+#### Add a registry.json file
+
+Create a `registry.json` file in the root of your project. Your project can be a Next.js, Remix, Vite, or any other project that supports React.
+
+**registry.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "acme",
+  "homepage": "https://acme.com",
+  "items": [
+    // ...
+  ]
+}
+```
+
+This `registry.json` file must conform to the registry schema specification.
+
+#### Add a registry item
+
+##### Create your component
+
+Add your first component. Here's an example of a simple `<HelloWorld />` component:
+
+**registry/new-york/hello-world/hello-world.tsx**
+```tsx
+import { Button } from "@/components/ui/button"
+ 
+export function HelloWorld() {
+  return <Button>Hello World</Button>
+}
+```
+
+> **Note:** This example places the component in the `registry/new-york` directory. You can place it anywhere in your project as long as you set the correct path in the `registry.json` file and you follow the `registry/[NAME]` directory structure.
+
+```
+registry
+└── new-york
+    └── hello-world
+        └── hello-world.tsx
+```
+
+##### Add your component to the registry
+
+To add your component to the registry, you need to add your component definition to `registry.json`.
+
+**registry.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "acme",
+  "homepage": "https://acme.com",
+  "items": [
+    {
+      "name": "hello-world",
+      "type": "registry:block",
+      "title": "Hello World",
+      "description": "A simple hello world component.",
+      "files": [
+        {
+          "path": "registry/new-york/hello-world/hello-world.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}
+```
+
+You define your registry item by adding a name, type, title, description and files.
+
+For every file you add, you must specify the path and type of the file. The path is the relative path to the file from the root of your project. The type is the type of the file.
+
+You can read more about the registry item schema and file types in the registry item schema docs.
+
+### Build your registry
+
+#### Install the shadcn CLI
+
+> **Note:** the build command is currently only available in the `shadcn@canary` version of the CLI.
+
+```bash
+# pnpm
+pnpm add shadcn@canary
+
+# npm
+npm add shadcn@canary
+
+# yarn
+yarn add shadcn@canary
+
+# bun
+bun add shadcn@canary
+```
+
+#### Add a build script
+
+Add a `registry:build` script to your `package.json` file.
+
+**package.json**
+```json
+{
+  "scripts": {
+    "registry:build": "shadcn build"
+  }
+}
+```
+
+#### Run the build script
+
+Run the build script to generate the registry JSON files.
+
+```bash
+# pnpm
+pnpm registry:build
+
+# npm
+npm run registry:build
+
+# yarn
+yarn registry:build
+
+# bun
+bun run registry:build
+```
+
+> **Note:** By default, the build script will generate the registry JSON files in `public/r` e.g `public/r/hello-world.json`.
+
+You can change the output directory by passing the `--output` option. See the `shadcn build` command for more information.
+
+### Serve your registry
+
+If you're running your registry on Next.js, you can now serve your registry by running the next server. The command might differ for other frameworks.
+
+```bash
+# pnpm
+pnpm dev
+
+# npm
+npm run dev
+
+# yarn
+yarn dev
+
+# bun
+bun dev
+```
+
+Your files will now be served at `http://localhost:3000/r/[NAME].json` eg. `http://localhost:3000/r/hello-world.json`.
+
+### Publish your registry
+
+To make your registry available to other developers, you can publish it by deploying your project to a public URL.
+
+### Adding Auth
+
+The shadcn CLI does not offer a built-in way to add auth to your registry. We recommend handling authorization on your registry server.
+
+A common simple approach is to use a token query parameter to authenticate requests to your registry. e.g. `http://localhost:3000/r/hello-world.json?token=[SECURE_TOKEN_HERE]`.
+
+Use the secure token to authenticate requests and return a 401 Unauthorized response if the token is invalid. Both the shadcn CLI and Open in v0 will handle the 401 response and display a message to the user.
+
+> **Note:** Make sure to encrypt and expire tokens.
+
+### Guidelines
+
+Here are some guidelines to follow when building components for a registry.
+
+- Place your registry item in the `registry/[STYLE]/[NAME]` directory. I'm using `new-york` as an example. It can be anything you want as long as it's nested under the `registry` directory.
+- The following properties are required for the block definition: `name`, `description`, `type` and `files`.
+- Make sure to list all registry dependencies in `registryDependencies`. A registry dependency is the name of the component in the registry eg. `input`, `button`, `card`, etc or a URL to a registry item eg. `http://localhost:3000/r/editor.json`.
+- Make sure to list all dependencies in `dependencies`. A dependency is the name of the package in the registry eg. `zod`, `sonner`, etc. To set a version, you can use the `name@version` format eg. `zod@^3.20.0`.
+- Imports should always use the `@/registry` path. eg. `import { HelloWorld } from "@/registry/new-york/hello-world/hello-world"`
+- Ideally, place your files within a registry item in `components`, `hooks`, `lib` directories.
+
+### Install using the CLI
+
+To install a registry item using the shadcn CLI, use the `add` command followed by the URL of the registry item.
+
+```bash
+# pnpm
+pnpm dlx shadcn@latest add http://localhost:3000/r/hello-world.json
+
+# npm
+npx shadcn@latest add http://localhost:3000/r/hello-world.json
+
+# yarn
+yarn dlx shadcn@latest add http://localhost:3000/r/hello-world.json
+
+# bun
+bunx shadcn@latest add http://localhost:3000/r/hello-world.json
+```
+
+## FAQ
+
+**Frequently asked questions about running a registry.**
+
+### What does a complex component look like?
+
+Here's an example of a complex component that installs a page, two components, a hook, a format-date utils and a config file.
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hello-world",
+  "title": "Hello World",
+  "type": "registry:block",
+  "description": "A complex hello world component",
+  "files": [
+    {
+      "path": "registry/new-york/hello-world/page.tsx",
+      "type": "registry:page",
+      "target": "app/hello/page.tsx"
+    },
+    {
+      "path": "registry/new-york/hello-world/components/hello-world.tsx",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/new-york/hello-world/components/formatted-message.tsx",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/new-york/hello-world/hooks/use-hello.ts",
+      "type": "registry:hook"
+    },
+    {
+      "path": "registry/new-york/hello-world/lib/format-date.ts",
+      "type": "registry:utils"
+    },
+    {
+      "path": "registry/new-york/hello-world/hello.config.ts",
+      "type": "registry:file",
+      "target": "~/hello.config.ts"
+    }
+  ]
+}
+```
+
+### How do I add a new Tailwind color?
+
+To add a new color you need to add it to `cssVars` under `light` and `dark` keys.
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hello-world",
+  "title": "Hello World",
+  "type": "registry:block",
+  "description": "A complex hello world component",
+  "files": [
+    // ...
+  ],
+  "cssVars": {
+    "light": {
+      "brand-background": "20 14.3% 4.1%",
+      "brand-accent": "20 14.3% 4.1%"
+    },
+    "dark": {
+      "brand-background": "20 14.3% 4.1%",
+      "brand-accent": "20 14.3% 4.1%"
+    }
+  }
+}
+```
+
+The CLI will update the project CSS file. Once updated, the new colors will be available to be used as utility classes: `bg-brand` and `text-brand-accent`.
+
+### How do I add or override a Tailwind theme variable?
+
+To add or override a theme variable you add it to `cssVars.theme` under the key you want to add or override.
+
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hello-world",
+  "title": "Hello World",
+  "type": "registry:block",
+  "description": "A complex hello world component",
+  "files": [
+    // ...
+  ],
+  "cssVars": {
+    "theme": {
+      "text-base": "3rem",
+      "ease-in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "font-heading": "Poppins, sans-serif"
+    }
+  }
+}
+```
+
+## Open in v0
+
+**Integrate your registry with Open in v0.**
+
+If your registry is hosted and publicly accessible via a URL, you can open a registry item in v0 by using the `https://v0.dev/chat/api/open?url=[URL]` endpoint.
+
+eg. `https://v0.dev/chat/api/open?url=https://ui.shadcn.com/r/styles/new-york/login-01.json`
+
+> **Note:** The Open in v0 button does not support `cssVars` and `tailwind` properties.
+
+### Button
+
+See Build your Open in v0 button for more information on how to build your own Open in v0 button.
+
+Here's a simple example of how to add a Open in v0 button to your site.
+
+```tsx
+import { Button } from "@/components/ui/button"
+ 
+export function OpenInV0Button({ url }: { url: string }) {
+  return (
+    <Button
+      aria-label="Open in v0"
+      className="h-8 gap-1 rounded-[6px] bg-black px-3 text-xs text-white hover:bg-black hover:text-white dark:bg-white dark:text-black"
+      asChild
+    >
+      <a
+        href={`https://v0.dev/chat/api/open?url=${url}`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Open in{" "}
+        <svg
+          viewBox="0 0 40 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 text-current"
+        >
+          <path
+            d="M23.3919 0H32.9188C36.7819 0 39.9136 3.13165 39.9136 6.99475V16.0805H36.0006V6.99475C36.0006 6.90167 35.9969 6.80925 35.9898 6.71766L26.4628 16.079C26.4949 16.08 26.5272 16.0805 26.5595 16.0805H36.0006V19.7762H26.5595C22.6964 19.7762 19.4788 16.6139 19.4788 12.7508V3.68923H23.3919V12.7508C23.3919 12.9253 23.4054 13.0977 23.4316 13.2668L33.1682 3.6995C33.0861 3.6927 33.003 3.68923 32.9188 3.68923H23.3919V0Z"
+            fill="currentColor"
+          ></path>
+          <path
+            d="M13.7688 19.0956L0 3.68759H5.53933L13.6231 12.7337V3.68759H17.7535V17.5746C17.7535 19.6705 15.1654 20.6584 13.7688 19.0956Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </a>
+    </Button>
+  )
+}
+```
+
+Usage:
+```tsx
+<OpenInV0Button url="https://example.com/r/hello-world.json" />
+```
+
+### Authentication
+
+See the Adding Auth section for more information on how to authenticate requests to your registry and Open in v0.
+
+## Examples
+
+**Examples of registry items: styles, components, css vars, etc.**
+
+### registry:style
+
+#### Custom style that extends shadcn/ui
+
+The following registry item is a custom style that extends shadcn/ui. On `npx shadcn init`, it will:
+
+- Install `@tabler/icons-react` as a dependency.
+- Add the `login-01` block and `calendar` component to the project.
+- Add the `editor` from a remote registry.
+- Set the `font-sans` variable to `Inter, sans-serif`.
+- Install a brand color in light and dark mode.
+
+**example-style.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "example-style",
+  "type": "registry:style",
+  "dependencies": ["@tabler/icons-react"],
+  "registryDependencies": [
+    "login-01",
+    "calendar",
+    "https://example.com/r/editor.json"
+  ],
+  "cssVars": {
+    "theme": {
+      "font-sans": "Inter, sans-serif"
+    },
+    "light": {
+      "brand": "20 14.3% 4.1%"
+    },
+    "dark": {
+      "brand": "20 14.3% 4.1%"
+    }
+  }
+}
+```
+
+#### Custom style from scratch
+
+The following registry item is a custom style that doesn't extend shadcn/ui. See the `extends: none` field.
+
+It can be used to create a new style from scratch i.e custom components, css vars, dependencies, etc.
+
+On `npx shadcn add`, the following will:
+
+- Install `tailwind-merge` and `clsx` as dependencies.
+- Add the `utils` registry item from the shadcn/ui registry.
+- Add the `button`, `input`, `label`, and `select` components from a remote registry.
+- Install new css vars: `main`, `bg`, `border`, `text`, `ring`.
+
+**example-style.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "extends": "none",
+  "name": "new-style",
+  "type": "registry:style",
+  "dependencies": ["tailwind-merge", "clsx"],
+  "registryDependencies": [
+    "utils",
+    "https://example.com/r/button.json",
+    "https://example.com/r/input.json",
+    "https://example.com/r/label.json",
+    "https://example.com/r/select.json"
+  ],
+  "cssVars": {
+    "theme": {
+      "font-sans": "Inter, sans-serif"
+    },
+    "light": {
+      "main": "#88aaee",
+      "bg": "#dfe5f2",
+      "border": "#000",
+      "text": "#000",
+      "ring": "#000"
+    },
+    "dark": {
+      "main": "#88aaee",
+      "bg": "#272933",
+      "border": "#000",
+      "text": "#e6e6e6",
+      "ring": "#fff"
+    }
+  }
+}
+```
+
+### registry:theme
+
+#### Custom theme
+
+**example-theme.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-theme",
+  "type": "registry:theme",
+  "cssVars": {
+    "light": {
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.141 0.005 285.823)",
+      "primary": "oklch(0.546 0.245 262.881)",
+      "primary-foreground": "oklch(0.97 0.014 254.604)",
+      "ring": "oklch(0.746 0.16 232.661)",
+      "sidebar-primary": "oklch(0.546 0.245 262.881)",
+      "sidebar-primary-foreground": "oklch(0.97 0.014 254.604)",
+      "sidebar-ring": "oklch(0.746 0.16 232.661)"
+    },
+    "dark": {
+      "background": "oklch(1 0 0)",
+      "foreground": "oklch(0.141 0.005 285.823)",
+      "primary": "oklch(0.707 0.165 254.624)",
+      "primary-foreground": "oklch(0.97 0.014 254.604)",
+      "ring": "oklch(0.707 0.165 254.624)",
+      "sidebar-primary": "oklch(0.707 0.165 254.624)",
+      "sidebar-primary-foreground": "oklch(0.97 0.014 254.604)",
+      "sidebar-ring": "oklch(0.707 0.165 254.624)"
+    }
+  }
+}
+```
+
+#### Custom colors
+
+The following style will init using shadcn/ui defaults and then add a custom brand color.
+
+**example-style.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-style",
+  "type": "registry:style",
+  "cssVars": {
+    "light": {
+      "brand": "oklch(0.99 0.00 0)"
+    },
+    "dark": {
+      "brand": "oklch(0.14 0.00 286)"
+    }
+  }
+}
+```
+
+### registry:block
+
+#### Custom block
+
+This blocks installs the `login-01` block from the shadcn/ui registry.
+
+**login-01.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "login-01",
+  "type": "registry:block",
+  "description": "A simple login form.",
+  "registryDependencies": ["button", "card", "input", "label"],
+  "files": [
+    {
+      "path": "blocks/login-01/page.tsx",
+      "content": "import { LoginForm ...",
+      "type": "registry:page",
+      "target": "app/login/page.tsx"
+    },
+    {
+      "path": "blocks/login-01/components/login-form.tsx",
+      "content": "...",
+      "type": "registry:component"
+    }
+  ]
+}
+```
+
+#### Install a block and override primitives
+
+You can install a block from the shadcn/ui registry and override the primitives using your custom ones.
+
+On `npx shadcn add`, the following will:
+
+- Add the `login-01` block from the shadcn/ui registry.
+- Override the `button`, `input`, and `label` primitives with the ones from the remote registry.
+
+**example-style.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-login",
+  "type": "registry:block",
+  "registryDependencies": [
+    "login-01",
+    "https://example.com/r/button.json",
+    "https://example.com/r/input.json",
+    "https://example.com/r/label.json"
+  ]
+}
+```
+
+### CSS Variables
+
+#### Custom Theme Variables
+
+Add custom theme variables to the `theme` object.
+
+**example-theme.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-theme",
+  "type": "registry:theme",
+  "cssVars": {
+    "theme": {
+      "font-heading": "Inter, sans-serif",
+      "shadow-card": "0 0 0 1px rgba(0, 0, 0, 0.1)"
+    }
+  }
+}
+```
+
+#### Override Tailwind CSS variables
+
+**example-theme.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-theme",
+  "type": "registry:theme",
+  "cssVars": {
+    "theme": {
+      "spacing": "0.2rem",
+      "breakpoint-sm": "640px",
+      "breakpoint-md": "768px",
+      "breakpoint-lg": "1024px",
+      "breakpoint-xl": "1280px",
+      "breakpoint-2xl": "1536px"
+    }
+  }
+}
+```
+
+### Add custom CSS
+
+#### Base styles
+
+**example-base.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-style",
+  "type": "registry:style",
+  "css": {
+    "@layer base": {
+      "h1": {
+        "font-size": "var(--text-2xl)"
+      },
+      "h2": {
+        "font-size": "var(--text-xl)"
+      }
+    }
+  }
+}
+```
+
+#### Components
+
+**example-card.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-card",
+  "type": "registry:component",
+  "css": {
+    "@layer components": {
+      "card": {
+        "background-color": "var(--color-white)",
+        "border-radius": "var(--rounded-lg)",
+        "padding": "var(--spacing-6)",
+        "box-shadow": "var(--shadow-xl)"
+      }
+    }
+  }
+}
+```
+
+### Add custom utilities
+
+#### Simple utility
+
+**example-component.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-component",
+  "type": "registry:component",
+  "css": {
+    "@utility content-auto": {
+      "content-visibility": "auto"
+    }
+  }
+}
+```
+
+#### Complex utility
+
+**example-utility.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-component",
+  "type": "registry:component",
+  "css": {
+    "@utility scrollbar-hidden": {
+      "scrollbar-hidden": {
+        "&::-webkit-scrollbar": {
+          "display": "none"
+        }
+      }
+    }
+  }
+}
+```
+
+#### Functional utilities
+
+**example-functional.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-component",
+  "type": "registry:component",
+  "css": {
+    "@utility tab-*": {
+      "tab-size": "var(--tab-size-*)"
+    }
+  }
+}
+```
+
+### Add custom plugins
+
+**example-plugin.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-plugin",
+  "type": "registry:component",
+  "css": {
+    "@plugin @tailwindcss/typography": {},
+    "@plugin foo": {}
+  }
+}
+```
+
+### Add custom animations
+
+> **Note:** you need to define both `@keyframes` in `css` and `theme` in `cssVars` to use animations.
+
+**example-component.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "custom-component",
+  "type": "registry:component",
+  "cssVars": {
+    "theme": {
+      "--animate-wiggle": "wiggle 1s ease-in-out infinite"
+    }
+  },
+  "css": {
+    "@keyframes wiggle": {
+      "0%, 100%": {
+        "transform": "rotate(-3deg)"
+      },
+      "50%": {
+        "transform": "rotate(3deg)"
+      }
+    }
+  }
+}
+```
+
+## registry.json Schema
+
+**Schema for running your own component registry.**
+
+The `registry.json` schema is used to define your custom component registry.
+
+**registry.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "shadcn",
+  "homepage": "https://ui.shadcn.com",
+  "items": [
+    {
+      "name": "hello-world",
+      "type": "registry:block",
+      "title": "Hello World",
+      "description": "A simple hello world component.",
+      "files": [
+        {
+          "path": "registry/new-york/hello-world/hello-world.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Definitions
+
+You can see the JSON Schema for `registry.json` [here](https://ui.shadcn.com/schema/registry.json).
+
+#### $schema
+
+The `$schema` property is used to specify the schema for the `registry.json` file.
+
+**registry.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json"
+}
+```
+
+#### name
+
+The `name` property is used to specify the name of your registry. This is used for data attributes and other metadata.
+
+**registry.json**
+```json
+{
+  "name": "acme"
+}
+```
+
+#### homepage
+
+The homepage of your registry. This is used for data attributes and other metadata.
+
+**registry.json**
+```json
+{
+  "homepage": "https://acme.com"
+}
+```
+
+#### items
+
+The items in your registry. Each item must implement the registry-item schema specification.
+
+**registry.json**
+```json
+{
+  "items": [
+    {
+      "name": "hello-world",
+      "type": "registry:block",
+      "title": "Hello World",
+      "description": "A simple hello world component.",
+      "files": [
+        {
+          "path": "registry/new-york/hello-world/hello-world.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}
+```
+
+See the registry-item schema documentation for more information.
+
+## registry-item.json Schema
+
+**Specification for registry items.**
+
+The `registry-item.json` schema is used to define your custom registry items.
+
+**registry-item.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hello-world",
+  "type": "registry:block",
+  "title": "Hello World",
+  "description": "A simple hello world component.",
+  "files": [
+    {
+      "path": "registry/new-york/hello-world/hello-world.tsx",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/new-york/hello-world/use-hello-world.ts",
+      "type": "registry:hook"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "font-heading": "Poppins, sans-serif"
+    },
+    "light": {
+      "brand": "20 14.3% 4.1%"
+    },
+    "dark": {
+      "brand": "20 14.3% 4.1%"
+    }
+  }
+}
+```
+
+See more examples above.
+
+### Definitions
+
+You can see the JSON Schema for `registry-item.json` [here](https://ui.shadcn.com/schema/registry-item.json).
+
+#### $schema
+
+The `$schema` property is used to specify the schema for the `registry-item.json` file.
+
+**registry-item.json**
+```json
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json"
+}
+```
+
+#### name
+
+The name of the item. This is used to identify the item in the registry. It should be unique for your registry.
+
+**registry-item.json**
+```json
+{
+  "name": "hello-world"
+}
+```
+
+#### title
+
+A human-readable title for your registry item. Keep it short and descriptive.
+
+**registry-item.json**
+```json
+{
+  "title": "Hello World"
+}
+```
+
+#### description
+
+A description of your registry item. This can be longer and more detailed than the title.
+
+**registry-item.json**
+```json
+{
+  "description": "A simple hello world component."
+}
+```
+
+#### type
+
+The `type` property is used to specify the type of your registry item. This is used to determine the type and target path of the item when resolved for a project.
+
+**registry-item.json**
+```json
+{
+  "type": "registry:block"
+}
+```
+
+The following types are supported:
+
+| Type | Description |
+|------|-------------|
+| `registry:block` | Use for complex components with multiple files. |
+| `registry:component` | Use for simple components. |
+| `registry:lib` | Use for lib and utils. |
+| `registry:hook` | Use for hooks. |
+| `registry:ui` | Use for UI components and single-file primitives |
+| `registry:page` | Use for page or file-based routes. |
+| `registry:file` | Use for miscellaneous files. |
+| `registry:style` | Use for registry styles. eg. new-york |
+| `registry:theme` | Use for themes. |
+
+#### author
+
+The `author` property is used to specify the author of the registry item.
+
+It can be unique to the registry item or the same as the author of the registry.
+
+**registry-item.json**
+```json
+{
+  "author": "John Doe <john@doe.com>"
+}
+```
+
+#### dependencies
+
+The `dependencies` property is used to specify the dependencies of your registry item. This is for npm packages.
+
+Use `@version` to specify the version of your registry item.
+
+**registry-item.json**
+```json
+{
+  "dependencies": [
+    "@radix-ui/react-accordion",
+    "zod",
+    "lucide-react",
+    "name@1.0.2"
+  ]
+}
+```
+
+#### registryDependencies
+
+Used for registry dependencies. Can be names or URLs. Use the name of the item to reference shadcn/ui components and urls to reference other registries.
+
+- For shadcn/ui registry items such as `button`, `input`, `select`, etc use the name eg. `['button', 'input', 'select']`.
+- For custom registry items use the URL of the registry item eg. `['https://example.com/r/hello-world.json']`.
+
+**registry-item.json**
+```json
+{
+  "registryDependencies": [
+    "button",
+    "input",
+    "select",
+    "https://example.com/r/editor.json"
+  ]
+}
+```
+
+> **Note:** The CLI will automatically resolve remote registry dependencies.
+
+#### files
+
+The `files` property is used to specify the files of your registry item. Each file has a `path`, `type` and `target` (optional) property.
+
+The `target` property is required for `registry:page` and `registry:file` types.
+
+**registry-item.json**
+```json
+{
+  "files": [
+    {
+      "path": "registry/new-york/hello-world/page.tsx",
+      "type": "registry:page",
+      "target": "app/hello/page.tsx"
+    },
+    {
+      "path": "registry/new-york/hello-world/hello-world.tsx",
+      "type": "registry:component"
+    },
+    {
+      "path": "registry/new-york/hello-world/use-hello-world.ts",
+      "type": "registry:hook"
+    },
+    {
+      "path": "registry/new-york/hello-world/.env",
+      "type": "registry:file",
+      "target": "~/.env"
+    }
+  ]
+}
+```
+
+##### path
+
+The `path` property is used to specify the path to the file in your registry. This path is used by the build script to parse, transform and build the registry JSON payload.
+
+##### type
+
+The `type` property is used to specify the type of the file. See the type section for more information.
+
+##### target
+
+The `target` property is used to indicate where the file should be placed in a project. This is optional and only required for `registry:page` and `registry:file` types.
+
+By default, the shadcn cli will read a project's `components.json` file to determine the target path. For some files, such as routes or config you can specify the target path manually.
+
+Use `~` to refer to the root of the project e.g `~/foo.config.js`.
+
+#### tailwind
+
+**DEPRECATED:** Use `cssVars.theme` instead for Tailwind v4 projects.
+
+The `tailwind` property is used for tailwind configuration such as theme, plugins and content.
+
+You can use the `tailwind.config` property to add colors, animations and plugins to your registry item.
+
+**registry-item.json**
+```json
+{
+  "tailwind": {
+    "config": {
+      "theme": {
+        "extend": {
+          "colors": {
+            "brand": "hsl(var(--brand))"
+          },
+          "keyframes": {
+            "wiggle": {
+              "0%, 100%": { "transform": "rotate(-3deg)" },
+              "50%": { "transform": "rotate(3deg)" }
+            }
+          },
+          "animation": {
+            "wiggle": "wiggle 1s ease-in-out infinite"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### cssVars
+
+Use to define CSS variables for your registry item.
+
+**registry-item.json**
+```json
+{
+  "cssVars": {
+    "theme": {
+      "font-heading": "Poppins, sans-serif"
+    },
+    "light": {
+      "brand": "20 14.3% 4.1%",
+      "radius": "0.5rem"
+    },
+    "dark": {
+      "brand": "20 14.3% 4.1%"
+    }
+  }
+}
+```
+
+#### css
+
+Use `css` to add new rules to the project's CSS file eg. `@layer base`, `@layer components`, `@utility`, `@keyframes`, `@plugin`, etc.
+
+**registry-item.json**
+```json
+{
+  "css": {
+    "@plugin @tailwindcss/typography": {},
+    "@plugin foo": {},
+    "@layer base": {
+      "body": {
+        "font-size": "var(--text-base)",
+        "line-height": "1.5"
+      }
+    },
+    "@layer components": {
+      "button": {
+        "background-color": "var(--color-primary)",
+        "color": "var(--color-white)"
+      }
+    },
+    "@utility text-magic": {
+      "font-size": "var(--text-base)",
+      "line-height": "1.5"
+    },
+    "@keyframes wiggle": {
+      "0%, 100%": {
+        "transform": "rotate(-3deg)"
+      },
+      "50%": {
+        "transform": "rotate(3deg)"
+      }
+    }
+  }
+}
+```
+
+#### docs
+
+Use `docs` to show custom documentation or message when installing your registry item via the CLI.
+
+**registry-item.json**
+```json
+{
+  "docs": "Remember to add the FOO_BAR environment variable to your .env file."
+}
+```
+
+#### categories
+
+Use `categories` to organize your registry item.
+
+**registry-item.json**
+```json
+{
+  "categories": ["sidebar", "dashboard"]
+}
+```
+
+#### meta
+
+Use `meta` to add additional metadata to your registry item. You can add any key/value pair that you want to be available to the registry item.
+
+**registry-item.json**
+```json
+{
+  "meta": { "foo": "bar" }
+}
+```
