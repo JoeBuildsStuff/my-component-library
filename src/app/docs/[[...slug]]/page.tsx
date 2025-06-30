@@ -9,6 +9,9 @@ import { getGithubLastEdit } from 'fumadocs-core/server';
 import { notFound } from 'next/navigation';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import { getMDXComponents } from '@/mdx-components';
+import { LLMCopyButton, ViewOptions } from './page.client';
+import { owner, repo } from '@/lib/github';
+
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -20,8 +23,8 @@ export default async function Page(props: {
   const MDXContent = page.data.body;
 
   const time = await getGithubLastEdit({
-    owner: 'JoeBuildsStuff',
-    repo: 'my-component-library',
+    owner: owner,
+    repo: repo,
     path: `content/docs/${page.path}`,
   });
 
@@ -36,6 +39,13 @@ export default async function Page(props: {
     >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <div className="flex flex-row gap-2 items-center border-b pt-2 pb-6">
+          <LLMCopyButton slug={params.slug || []} />
+          <ViewOptions
+            markdownUrl={`${page.url}.mdx`}
+            githubUrl={`https://github.com/${owner}/${repo}/tree/main/content/docs/${page.path}`}
+          />
+        </div>
       <DocsBody>
         <MDXContent
           components={getMDXComponents({

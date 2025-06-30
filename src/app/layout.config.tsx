@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import { owner, repo } from '@/lib/github';
 
 /**
  * Shared layout configurations
@@ -23,7 +24,7 @@ export const baseOptions: BaseLayoutProps = {
       </>
     ),
   },
-  githubUrl: 'https://github.com/JoeBuildsStuff/my-component-library',
+  githubUrl: `https://github.com/${owner}/${repo}`,
   // see https://fumadocs.dev/docs/ui/navigation/links
   links: [
     {
