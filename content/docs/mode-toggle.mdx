@@ -3,11 +3,12 @@ title: Mode Toggle
 description: A toggle to switch between light and dark mode
 ---
 
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "../../registry/mode-toggle/components/mode-toggle";
+import { OpenInV0Button } from "../../registry/buttons/button-open-in-v0";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { File, Folder, Files } from 'fumadocs-ui/components/files';
-import { OpenInV0Button } from "@/components/button-open-in-v0";
+
 
 ## Preview
 
@@ -129,7 +130,7 @@ export function ModeToggle({ align = "center" }: ModeToggleProps) {
 
 ## Props
 
-<AutoTypeTable path="./src/components/mode-toggle.tsx" name="ModeToggleProps" />
+<AutoTypeTable path="./registry/mode-toggle/components/mode-toggle.tsx" name="ModeToggleProps" />
 
 ## Examples
 
