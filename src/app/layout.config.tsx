@@ -23,6 +23,14 @@ export const baseOptions: BaseLayoutProps = {
       </>
     ),
   },
+  githubUrl: 'https://github.com/JoeBuildsStuff/my-component-library',
   // see https://fumadocs.dev/docs/ui/navigation/links
-  links: [],
+  links: [
+    {
+      text: 'Docs',
+      url: '/docs',
+      // secondary items will be displayed differently on navbar
+      secondary: false,
+    },
+  ],
 };
