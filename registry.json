@@ -230,6 +230,50 @@
             }
           }
         }
+      },
+      {
+        "name": "registry-explorer",
+        "type": "registry:block",
+        "title": "Registry Explorer",
+        "description": "A file explorer component for browsing and viewing registry component files with syntax highlighting and copy functionality.",
+        "dependencies": [
+          "lucide-react"
+        ],
+        "registryDependencies": [
+          "button"
+        ],
+        "files": [
+          {
+            "path": "registry/registry-explorer/components/registry-explorer.tsx",
+            "type": "registry:component",
+            "target": "components/registry-explorer.tsx"
+          },
+          {
+            "path": "registry/registry-explorer/lib/api.ts",
+            "type": "registry:lib",
+            "target": "lib/api.ts"
+          },
+          {
+            "path": "registry/registry-explorer/utils/file-tree.ts",
+            "type": "registry:lib",
+            "target": "utils/file-tree.ts"
+          },
+          {
+            "path": "registry/registry-explorer/api/registry/route.ts",
+            "type": "registry:file",
+            "target": "app/api/registry/route.ts"
+          },
+          {
+            "path": "registry/registry-explorer/api/registry/[component]/route.ts",
+            "type": "registry:file",
+            "target": "app/api/registry/[component]/route.ts"
+          },
+          {
+            "path": "registry/registry-explorer/api/registry/[component]/files/[...path]/route.ts",
+            "type": "registry:file",
+            "target": "app/api/registry/[component]/files/[...path]/route.ts"
+          }
+        ]
       }
     ]
   }

@@ -1,7 +1,9 @@
 import { LucideIcon } from "lucide-react";
 
-interface LogoProps {
+export interface LogoProps {
+  /** The Lucide icon component to display */
   icon: LucideIcon;
+  /** The text to display next to the icon */
   text: string;
 }
 

@@ -7,7 +7,7 @@ import Tiptap from "../../registry/tiptap/components/tiptap";
 import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
 
 ## Preview
 
@@ -57,16 +57,10 @@ import Tiptap from "@/components/tiptap"
 
 ## File Structure
 
-<Files>
-  <Folder name="components" defaultOpen>
-    <File name="tiptap.tsx" />
-    <File name="tiptap-code-block.tsx" />
-    <File name="tiptap-dropdown-menu.tsx" />
-  </Folder>
-  <Folder name="app" defaultOpen>
-    <File name="page.tsx" />
-  </Folder>
-</Files>
+<RegistryExplorer 
+  componentName="tiptap" 
+  defaultSelectedFile="registry/tiptap/components/tiptap.tsx" 
+/>
 
 ## Props
 

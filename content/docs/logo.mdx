@@ -7,7 +7,7 @@ import Logo from "../../registry/ui/logo";
 import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
 import { Zap, Home, Settings, User, Heart, Star, Shield, Rocket, Coffee, Camera } from 'lucide-react';
 
 ## Preview
@@ -52,44 +52,16 @@ import { Zap } from "lucide-react"
 <Logo icon={Zap} text="Your Company" />
 ```
 
-## Source Code
-
-```tsx title="logo.tsx" lineNumbers
-import { LucideIcon } from "lucide-react";
-
-interface LogoProps {
-  icon: LucideIcon;
-  text: string;
-}
-
-export default function Logo({ icon: Icon, text }: LogoProps) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="p-1.5 bg-foreground text-background dark:bg-secondary dark:text-foreground rounded-lg">
-        <Icon className="size-5" />
-      </div>
-      <span className="hidden sm:block">{text}</span>
-    </div>
-  )
-}
-```
-
 ## File Structure
 
-<Files>
-  <Folder name="components" defaultOpen>
-    <Folder name="ui" defaultOpen>
-      <File name="logo.tsx" />
-    </Folder>
-  </Folder>
-</Files>
+<RegistryExplorer 
+  componentName="logo" 
+  defaultSelectedFile="registry/ui/logo.tsx" 
+/>
 
 ## Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `icon` | `LucideIcon` | The Lucide React icon component to display |
-| `text` | `string` | The text to display next to the icon |
+<AutoTypeTable path="./registry/ui/logo.tsx" name="LogoProps" />
 
 ## Examples
 

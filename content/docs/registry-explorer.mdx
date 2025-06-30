@@ -1,0 +1,111 @@
+---
+title: Registry Explorer
+description: A powerful file explorer component that allows you to browse and view component files from your registry with syntax highlighting and interactive navigation
+---
+
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+
+## Preview
+
+<Card className="items-center justify-center min-h-[600px] bg-background shadow-none p-6">
+    <div className="w-full max-w-6xl">
+        <RegistryExplorer 
+          componentName="registry-explorer" 
+          defaultSelectedFile="registry/registry-explorer/components/registry-explorer.tsx" 
+        />
+    </div>
+</Card>
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/registry-explorer.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the registry explorer'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-explorer
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-explorer
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-explorer
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-explorer
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import RegistryExplorer from "@/components/registry-explorer"
+```
+
+```tsx
+// Basic usage
+<RegistryExplorer componentName="badge" />
+
+// With custom styling and default file selection
+<RegistryExplorer 
+  componentName="tiptap"
+  className="border-2 border-dashed"
+  defaultSelectedFile="registry/tiptap/components/tiptap.tsx"
+/>
+```
+
+## File Structure
+
+<RegistryExplorer 
+  componentName="registry-explorer" 
+  defaultSelectedFile="registry/registry-explorer/components/registry-explorer.tsx" 
+/>
+
+## Props
+
+<AutoTypeTable path="./registry/registry-explorer/components/registry-explorer.tsx" name="RegistryExplorerProps" />
+
+## Features
+
+- **Interactive File Tree**: Navigate through component files with expandable folders
+- **Syntax Highlighting**: View code with proper formatting and line numbers
+- **Auto-expand**: Automatically expands all folders for easy navigation
+- **Copy to Clipboard**: One-click copying of file contents
+- **Responsive Design**: Adapts to different screen sizes with collapsible sidebar
+- **Loading States**: Smooth loading indicators for better user experience
+- **Error Handling**: Graceful error handling with helpful error messages
+
+## Examples
+
+### Exploring Different Components
+
+```tsx
+// Explore a simple UI component
+<RegistryExplorer componentName="badge" />
+
+// Explore a complex component with multiple files
+<RegistryExplorer componentName="tiptap" />
+
+// Explore with a specific file pre-selected
+<RegistryExplorer 
+  componentName="mode-toggle"
+  defaultSelectedFile="registry/mode-toggle/components/theme-provider.tsx"
+/>
+```
+
+### Custom Styling
+
+```tsx
+<RegistryExplorer 
+  componentName="logo"
+  className="h-[400px] border-primary/20 rounded-xl"
+/>
+```
