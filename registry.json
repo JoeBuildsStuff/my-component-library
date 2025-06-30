@@ -95,6 +95,53 @@
             "target": "components/ui/logo.tsx"
           }
         ]
+      },
+      {
+        "name": "tiptap",
+        "type": "registry:component",
+        "title": "Tiptap Editor",
+        "description": "A rich text editor built with Tiptap, featuring a customizable toolbar, bubble menu, and code blocks with syntax highlighting.",
+        "dependencies": [
+          "@tiptap/react",
+          "@tiptap/starter-kit",
+          "@tiptap/extension-underline",
+          "@tiptap/extension-text-align",
+          "@tiptap/extension-placeholder",
+          "@tiptap/extension-code-block-lowlight",
+          "lowlight",
+          "lucide-react"
+        ],
+        "registryDependencies": [
+          "toggle",
+          "tooltip",
+          "dropdown-menu",
+          "button",
+          "select",
+          "separator",
+          "skeleton"
+        ],
+        "files": [
+          {
+            "path": "registry/tiptap/components/tiptap.tsx",
+            "type": "registry:component",
+            "target": "components/tiptap.tsx"
+          },
+          {
+            "path": "registry/tiptap/components/tiptap-code-block.tsx",
+            "type": "registry:component",
+            "target": "components/tiptap-code-block.tsx"
+          },
+          {
+            "path": "registry/tiptap/components/tiptap-dropdown-menu.tsx",
+            "type": "registry:component",
+            "target": "components/tiptap-dropdown-menu.tsx"
+          },
+          {
+            "path": "registry/tiptap/app/page.tsx",
+            "type": "registry:page",
+            "target": "app/page.tsx"
+          }
+        ]
       }
     ]
   }

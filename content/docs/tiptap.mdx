@@ -1,0 +1,75 @@
+---
+title: Tiptap
+description: A rich text editor built with Tiptap, featuring a customizable toolbar, bubble menu, and code blocks with syntax highlighting
+---
+
+import Tiptap from "../../registry/tiptap/components/tiptap";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+
+## Preview
+
+<Card className="items-center justify-center min-h-[500px] bg-background shadow-none p-6">
+    <div className="w-full max-w-4xl">
+        <Tiptap content="<h1>Welcome to Tiptap</h1><p>This is a <strong>rich text editor</strong> with <em>many features</em>:</p><ul><li>Fixed toolbar menu</li><li>Bubble menu for selections</li><li>Code blocks with syntax highlighting</li><li>Text formatting and alignment</li></ul><p>Try selecting some text to see the bubble menu!</p>" />
+    </div>
+</Card>
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/tiptap.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the tiptap editor'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/tiptap
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/tiptap
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/tiptap
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/tiptap
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import Tiptap from "@/components/tiptap"
+```
+
+```tsx
+<Tiptap 
+  content="<p>Initial content...</p>"
+  onChange={(content) => console.log(content)}
+/>
+```
+
+## File Structure
+
+<Files>
+  <Folder name="components" defaultOpen>
+    <File name="tiptap.tsx" />
+    <File name="tiptap-code-block.tsx" />
+    <File name="tiptap-dropdown-menu.tsx" />
+  </Folder>
+  <Folder name="app" defaultOpen>
+    <File name="page.tsx" />
+  </Folder>
+</Files>
+
+## Props
+
+<AutoTypeTable path="./registry/tiptap/components/tiptap.tsx" name="TiptapProps" />
+
+
