@@ -1,13 +1,11 @@
 {
   "pages": [
-    "---Introduction---",
-    "index",
-    "---Components---",
+    "---Basic Components---",
     "buttons",
     "badge",
     "logo",
-    "---Blocks---",
     "mode-toggle",
+    "---Advanced Components---",
     "wysiwyg-editor",
     "registry-explorer"
   ]
