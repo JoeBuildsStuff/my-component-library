@@ -455,7 +455,7 @@ export default function AttioContact() {
                             "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
                             !company && "text-muted-foreground/80"
                         )}>
-                            {<Badge variant="outline" className="text-sm">{company || "Set Company..."}</Badge>}
+                            {company ? <Badge variant="outline" className="text-sm">{company}</Badge> : "Set Company..."}
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0" align="start">
                             <Command>
