@@ -1,0 +1,62 @@
+---
+title: Data Table
+description: A table to display data
+---
+
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
+import DataTableExampleContactsPage from "../../registry/data-table/app/contacts/page";
+
+## Preview
+
+<RegistryPreview>
+    <DataTableExampleContactsPage />
+</RegistryPreview>
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/data-table.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the badge'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/data-table
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/data-table
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/data-table
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/data-table
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import { DataTable } from "@/components/data-table/data-table"
+```
+
+```tsx
+<DataTable />
+```
+
+## Source Code
+
+<RegistryExplorer 
+  componentName="data-table" 
+  defaultSelectedFile="registry/data-table/components/data-table.tsx" 
+/>
+
+## Props
+
+{/* <AutoTypeTable path="./registry/data-table/components/data-table.tsx" name="DataTableProps" /> */}
+

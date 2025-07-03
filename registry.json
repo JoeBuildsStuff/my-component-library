@@ -335,6 +335,162 @@
             "target": "app/page.tsx"
           }
         ]
+      },
+      {
+        "name": "data-table",
+        "type": "registry:block",
+        "title": "Data Table",
+        "description": "A comprehensive data table component with advanced filtering, sorting, pagination, column management, and CRUD operations. Features drag-and-drop reordering, multi-column filtering with various operators, and form-based row editing.",
+        "dependencies": [
+          "@tanstack/react-table",
+          "@dnd-kit/core",
+          "@dnd-kit/sortable",
+          "@dnd-kit/utilities",
+          "react-aria-components",
+          "date-fns",
+          "next",
+          "lucide-react"
+        ],
+        "registryDependencies": [
+          "table",
+          "button",
+          "input",
+          "label",
+          "textarea",
+          "badge",
+          "select",
+          "switch",
+          "calendar",
+          "popover",
+          "command",
+          "checkbox",
+          "dropdown-menu",
+          "alert-dialog",
+          "sheet",
+          "separator"
+        ],
+        "files": [
+          {
+            "path": "registry/data-table/components/data-table/data-table.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-column-header.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-column-header.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-filter.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-filter.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-filter-item.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-filter-item.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-pagination.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-pagination.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-add.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-add.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-delete.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-delete.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-edit.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-edit.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-form.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-form.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-sort.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-sort.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-sort-item.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-sort-item.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-toolbar.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-toolbar.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-view-options.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-view-options.tsx"
+          },
+          {
+            "path": "registry/data-table/components/ui/input-number.tsx",
+            "type": "registry:component",
+            "target": "components/ui/input-number.tsx"
+          },
+          {
+            "path": "registry/data-table/lib/data-table.ts",
+            "type": "registry:lib",
+            "target": "lib/data-table.ts"
+          },
+          {
+            "path": "registry/data-table/lib/supabase/client.ts",
+            "type": "registry:lib",
+            "target": "lib/supabase/client.ts"
+          },
+          {
+            "path": "registry/data-table/lib/supabase/server.ts",
+            "type": "registry:lib",
+            "target": "lib/supabase/server.ts"
+          },
+          {
+            "path": "registry/data-table/lib/supabase/middleware.ts",
+            "type": "registry:lib",
+            "target": "lib/supabase/middleware.ts"
+          },
+          {
+            "path": "registry/data-table/app/contacts/page.tsx",
+            "type": "registry:page",
+            "target": "app/contacts/page.tsx"
+          },
+          {
+            "path": "registry/data-table/app/contacts/_components/contacts-table.tsx",
+            "type": "registry:component",
+            "target": "app/contacts/_components/contacts-table.tsx"
+          },
+          {
+            "path": "registry/data-table/app/contacts/_components/contacts-columns.tsx",
+            "type": "registry:component",
+            "target": "app/contacts/_components/contacts-columns.tsx"
+          },
+          {
+            "path": "registry/data-table/app/contacts/_lib/actions.ts",
+            "type": "registry:lib",
+            "target": "app/contacts/_lib/actions.ts"
+          },
+          {
+            "path": "registry/data-table/app/contacts/_lib/queries.ts",
+            "type": "registry:lib",
+            "target": "app/contacts/_lib/queries.ts"
+          },
+          {
+            "path": "registry/data-table/app/contacts/_lib/validations.ts",
+            "type": "registry:lib",
+            "target": "app/contacts/_lib/validations.ts"
+          }
+        ]
       }
     ]
   }
