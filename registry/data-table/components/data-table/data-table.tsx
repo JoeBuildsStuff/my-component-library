@@ -33,7 +33,27 @@ import {
   updateSearchParams 
 } from "@/lib/data-table"
 
-interface DataTableProps<TData, TValue> {
+/**
+ * Props for the DataTable component
+ */
+export interface DataTableProps {
+  /** Array of column definitions that define the table structure */
+  columns: ColumnDef<Record<string, unknown>, unknown>[]
+  /** Array of data objects to display in the table */
+  data: Record<string, unknown>[]
+  /** Initial state for the table including pagination, sorting, filters, etc. */
+  initialState?: Partial<DataTableState>
+  /** Total number of pages for server-side pagination */
+  pageCount?: number
+  /** Function to handle bulk deletion of rows */
+  deleteAction?: (ids: string[]) => Promise<{ success: boolean; error?: string; deletedCount?: number }>
+  /** Function to handle creation of new rows */
+  createAction?: (data: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>
+  /** Function to handle updating existing rows */
+  updateAction?: (id: string, data: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>
+}
+
+interface DataTableInternalProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   initialState?: Partial<DataTableState>
@@ -51,7 +71,7 @@ export function DataTable<TData, TValue>({
   deleteAction,
   createAction,
   updateAction,
-}: DataTableProps<TData, TValue>) {
+}: DataTableInternalProps<TData, TValue>) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()

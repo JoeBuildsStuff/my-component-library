@@ -20,7 +20,7 @@ import DataTableExampleContactsPage from "../../registry/data-table/app/contacts
     <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/data-table.json" />
 </div>
 
-<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the badge'>
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the data table'>
 
     ```bash tab="npm"
     npx shadcn@latest add https://my-component-library-woad.vercel.app/r/data-table
@@ -43,10 +43,29 @@ import DataTableExampleContactsPage from "../../registry/data-table/app/contacts
 
 ```tsx
 import { DataTable } from "@/components/data-table/data-table"
+import { ColumnDef } from "@tanstack/react-table"
 ```
 
 ```tsx
-<DataTable />
+const columns: ColumnDef<YourDataType>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+]
+
+<DataTable 
+  columns={columns} 
+  data={data} 
+  pageCount={pageCount}
+  deleteAction={deleteAction}
+  createAction={createAction}
+  updateAction={updateAction}
+/>
 ```
 
 ## Source Code
@@ -58,5 +77,372 @@ import { DataTable } from "@/components/data-table/data-table"
 
 ## Props
 
-{/* <AutoTypeTable path="./registry/data-table/components/data-table.tsx" name="DataTableProps" /> */}
+<AutoTypeTable path="./registry/data-table/components/data-table/data-table.tsx" name="DataTableProps" />
+
+## Full Implementation Setup
+
+For a complete data table implementation, you'll need to set up several components. Here's a comprehensive guide using the contacts example:
+
+### 1. Database Table (Supabase)
+
+First, create your database table. For the contacts example:
+
+```sql
+create table registry_contacts (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  first_name text,
+  last_name text,
+  display_name text,
+  nickname text,
+  primary_email text,
+  primary_phone text,
+  company text,
+  job_title text,
+  birthday date,
+  notes text,
+  is_favorite boolean default false,
+  tags text[]
+);
+
+-- Add RLS policies as needed
+alter table registry_contacts enable row level security;
+```
+
+### 2. Type Definitions
+
+Create type definitions for your data (`_lib/validations.ts`):
+
+```tsx
+export type Contacts = {
+  id: string
+  created_at?: string
+  updated_at?: string
+  first_name?: string
+  last_name?: string
+  display_name?: string
+  nickname?: string | null
+  primary_email?: string
+  primary_phone?: string
+  company?: string
+  job_title?: string
+  birthday?: string
+  notes?: string
+  is_favorite?: boolean
+  tags?: string[] | null
+}
+```
+
+### 3. Database Queries
+
+Create query functions (`_lib/queries.ts`):
+
+```tsx
+import { createClient } from "@/lib/supabase/server"
+import { parseSearchParams, SearchParams } from "@/lib/data-table"
+import { Contacts } from "./validations"
+import { PostgrestError } from "@supabase/supabase-js"
+
+export async function getContacts(searchParams: SearchParams): Promise<{ 
+  data: Contacts[], 
+  count: number, 
+  error: PostgrestError | null 
+}> {
+  const supabase = await createClient()
+  const { 
+    pagination, 
+    sorting, 
+    columnFilters 
+  } = parseSearchParams(searchParams)
+
+  const { pageIndex, pageSize } = pagination ?? { pageIndex: 0, pageSize: 10 }
+  const sort = sorting ?? []
+  const filters = columnFilters ?? []
+
+  let query = supabase
+    .from("your_table_name")
+    .select("*", { count: "exact" })
+
+  // Apply sorting
+  if (sort.length > 0) {
+    sort.forEach(s => {
+      query = query.order(s.id, { ascending: !s.desc })
+    })
+  } else {
+    query = query.order("created_at", { ascending: false })
+  }
+
+  // Apply filters
+  filters.forEach(filter => {
+    const { id: columnId, value: filterValue } = filter
+    if (typeof filterValue === 'object' && filterValue !== null && 'operator' in filterValue) {
+      const { operator, value } = filterValue as { operator: string, value: unknown }
+
+      if (!operator || value === null || value === undefined) return
+
+      switch (operator) {
+        case "iLike":
+          query = query.ilike(columnId, `%${value}%`)
+          break
+        case "eq":
+          query = query.eq(columnId, value)
+          break
+        case "ne":
+          query = query.neq(columnId, value)
+          break
+        // Add more operators as needed
+      }
+    }
+  })
+
+  // Apply pagination
+  const from = pageIndex * pageSize
+  const to = from + pageSize - 1
+  query = query.range(from, to)
+
+  const { data, count, error } = await query
+
+  return { 
+    data: data as Contacts[], 
+    count: count ?? 0,
+    error 
+  }
+}
+```
+
+### 4. Server Actions
+
+Create server actions for CRUD operations (`_lib/actions.ts`):
+
+```tsx
+"use server"
+
+import { createClient } from "@/lib/supabase/server"
+import { revalidatePath } from "next/cache"
+import { Contacts } from "./validations"
+
+export async function createContact(data: Omit<Contacts, "id" | "created_at" | "updated_at">) {
+  const supabase = await createClient()
+  
+  try {
+    const { data: newContact, error } = await supabase
+      .from("your_table_name")
+      .insert([data])
+      .select()
+      .single()
+    
+    if (error) {
+      return { success: false, error: error.message }
+    }
+    
+    revalidatePath("/your-page")
+    return { success: true, data: newContact }
+  } catch (error) {
+    return { success: false, error: "An unexpected error occurred" }
+  }
+}
+
+export async function updateContact(id: string, data: Partial<Omit<Contacts, "id" | "created_at" | "updated_at">>) {
+  const supabase = await createClient()
+  
+  try {
+    const { data: updatedContact, error } = await supabase
+      .from("your_table_name")
+      .update(data)
+      .eq("id", id)
+      .select()
+      .single()
+    
+    if (error) {
+      return { success: false, error: error.message }
+    }
+    
+    revalidatePath("/your-page")
+    return { success: true, data: updatedContact }
+  } catch (error) {
+    return { success: false, error: "An unexpected error occurred" }
+  }
+}
+
+export async function deleteContacts(contactIds: string[]) {
+  const supabase = await createClient()
+  
+  try {
+    const { error } = await supabase
+      .from("your_table_name")
+      .delete()
+      .in("id", contactIds)
+    
+    if (error) {
+      return { success: false, error: error.message }
+    }
+    
+    revalidatePath("/your-page")
+    return { success: true, deletedCount: contactIds.length }
+  } catch (error) {
+    return { success: false, error: "An unexpected error occurred" }
+  }
+}
+```
+
+### 5. Column Definitions
+
+Create column definitions (`_components/your-columns.tsx`):
+
+```tsx
+"use client"
+
+import { ColumnDef } from "@tanstack/react-table"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Badge } from "@/components/ui/badge"
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header"
+import { YourDataType } from "../_lib/validations"
+
+export const columns: ColumnDef<YourDataType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+    meta: {
+      excludeFromForm: true,
+    },
+  },
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: () => null, // Hidden column
+    meta: {
+      excludeFromForm: true,
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    cell: ({ row }) => {
+      const name = row.getValue("name") as string
+      return <div className="font-medium">{name}</div>
+    },
+    meta: {
+      label: "Name",
+      variant: "text",
+      placeholder: "Enter name...",
+    },
+    enableColumnFilter: true,
+  },
+  // Add more columns as needed
+]
+```
+
+### 6. Table Component
+
+Create the main table component (`_components/your-table.tsx`):
+
+```tsx
+import { columns } from "./your-columns"
+import { DataTable } from "@/components/data-table/data-table"
+import { parseSearchParams, SearchParams } from "@/lib/data-table"
+import { getYourData } from "../_lib/queries"
+import { deleteItems, createItem, updateItem } from "../_lib/actions"
+
+interface YourTableProps {
+  searchParams?: SearchParams
+}
+
+export default async function YourTable({ 
+  searchParams = {} 
+}: YourTableProps) {
+  const { data, count, error } = await getYourData(searchParams)
+  const { pagination } = parseSearchParams(searchParams)
+
+  if (error) {
+    console.error(error)
+  }
+
+  const pageCount = Math.ceil((count ?? 0) / (pagination?.pageSize ?? 10))
+  const initialState = parseSearchParams(searchParams)
+
+  return (
+    <DataTable 
+      columns={columns} 
+      data={data} 
+      pageCount={pageCount}
+      initialState={initialState}
+      deleteAction={deleteItems}
+      createAction={createItem}
+      updateAction={updateItem}
+    />
+  )
+}
+```
+
+### 7. Page Component
+
+Finally, create your page component (`page.tsx`):
+
+```tsx
+import YourTable from "./_components/your-table"
+
+export default async function YourPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const params = await searchParams
+
+  return (
+    <main className="px-3 py-10 w-full max-w-5xl mx-auto">
+      <YourTable searchParams={params} />
+    </main>
+  )
+}
+```
+
+### Column Meta Properties
+
+The data table supports various column meta properties for forms and filters:
+
+- `variant`: Field type (`"text"`, `"date"`, `"boolean"`, `"select"`, `"multiSelect"`)
+- `label`: Display label for forms
+- `placeholder`: Placeholder text for inputs
+- `options`: Options for select/multiSelect variants
+- `readOnly`: Whether the field is read-only in forms
+- `excludeFromForm`: Whether to exclude from create/edit forms
+
+### Filter Operators
+
+The data table supports various filter operators:
+
+- `iLike`: Case-insensitive pattern matching
+- `eq`: Equals
+- `ne`: Not equals
+- `lt`: Less than
+- `gt`: Greater than
+- `inArray`: In array (for select fields)
+- `isEmpty`: Is empty/null
+- `isNotEmpty`: Is not empty/null
+- `isBetween`: Between two values (for date/number ranges)
+
+This setup provides a complete, production-ready data table with full CRUD operations, filtering, sorting, and pagination.
+
+
 
