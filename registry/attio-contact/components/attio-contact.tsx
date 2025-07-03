@@ -502,7 +502,7 @@ export default function AttioContact() {
             <div className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2 text-sm w-[10rem]">
                     <BriefcaseBusiness className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Job title</span>
+                    <span className="whitespace-nowrap">Title</span>
                 </div>
                 <input className="w-full text-left hover:bg-secondary rounded-md py-2 px-2" placeholder="Set Job title..." />
             </div>
