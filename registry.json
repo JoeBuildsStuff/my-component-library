@@ -274,6 +274,40 @@
             "target": "app/api/registry/[component]/files/[...path]/route.ts"
           }
         ]
+      },
+      {
+        "name": "attio-contact",
+        "type": "registry:block",
+        "title": "Attio Contact Form",
+        "description": "A comprehensive contact form component inspired by Attio's design, featuring drag-and-drop sortable email and phone fields, company selection with search, and popover-based field editing.",
+        "dependencies": [
+          "lucide-react",
+          "@dnd-kit/core",
+          "@dnd-kit/sortable",
+          "@dnd-kit/utilities"
+        ],
+        "registryDependencies": [
+          "input",
+          "button",
+          "badge",
+          "popover",
+          "command",
+          "dialog",
+          "textarea",
+          "label"
+        ],
+        "files": [
+          {
+            "path": "registry/attio-contact/components/attio-contact.tsx",
+            "type": "registry:component",
+            "target": "components/attio-contact.tsx"
+          },
+          {
+            "path": "registry/attio-contact/app/page.tsx",
+            "type": "registry:page",
+            "target": "app/page.tsx"
+          }
+        ]
       }
     ]
   }

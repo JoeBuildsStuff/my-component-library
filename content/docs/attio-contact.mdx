@@ -1,0 +1,56 @@
+---
+title: Attio Contact Form
+description: A comprehensive contact form component inspired by Attio's design, featuring drag-and-drop sortable email and phone fields, company selection with search, and popover-based field editing.
+---
+
+import AttioContact from "../../registry/attio-contact/components/attio-contact";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+
+## Preview
+
+<Card className="items-center justify-center min-h-[350px] bg-background shadow-none p-6">
+    <AttioContact />
+</Card>
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/attio-contact.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the attio-contact'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/attio-contact
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/attio-contact
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/attio-contact
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/attio-contact
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import AttioContact from "@/components/attio-contact"
+```
+
+```tsx
+<AttioContact />
+```
+
+## Source Code
+
+<RegistryExplorer 
+  componentName="attio-contact" 
+  defaultSelectedFile="registry/attio-contact/components/attio-contact.tsx" 
+/>
