@@ -1,0 +1,88 @@
+---
+title: Registry Preview
+description: A resizable preview component with a dotted grid background for showcasing components in a responsive container.
+---
+
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+## Preview
+
+<RegistryPreview>
+  <div className="flex flex-col items-center gap-4">
+      <Button>Click me</Button>
+  </div>
+</RegistryPreview>
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/registry-preview.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the registry-preview'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-preview
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-preview
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-preview
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/registry-preview
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import RegistryPreview from "@/components/registry-preview"
+```
+
+```tsx
+<RegistryPreview>
+  <YourComponent />
+</RegistryPreview>
+```
+
+## Props
+
+<AutoTypeTable path="./registry/registry-preview/components/registry-preview.tsx" name="RegistryPreviewProps" />
+
+
+## Source Code
+
+<RegistryExplorer 
+  componentName="registry-preview" 
+  defaultSelectedFile="registry/registry-preview/components/registry-preview.tsx" 
+/>
+
+## Examples
+
+### Without Grid Background
+
+<RegistryPreview showGrid={false}>
+  <div className="p-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg">
+    <h3 className="text-xl font-bold">No Grid Background</h3>
+    <p>This preview has the grid background disabled.</p>
+  </div>
+</RegistryPreview>
+
+### Custom Dimensions
+
+<RegistryPreview defaultSize={70} minHeight="200px" maxWidth="2xl">
+  <div className="text-center">
+    <h4 className="font-semibold">Smaller Container</h4>
+    <p className="text-sm text-muted-foreground">70% default size, 200px min height, 2xl max width</p>
+  </div>
+</RegistryPreview>
+

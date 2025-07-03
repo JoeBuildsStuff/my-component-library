@@ -3,19 +3,19 @@ title: Open in v0
 description: A button to open a component in v0
 ---
 
-import { OpenInV0Button } from "../../../registry/ui/buttons/button-open-in-v0";
-import { Card } from "@/components/ui/card";
-import RegistryExplorer from "../../../registry/registry-explorer/components/registry-explorer";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
 
 ## Preview
 
-<Card className="items-center justify-center min-h-[350px] bg-background shadow-none">
+<RegistryPreview>
     <OpenInV0Button 
     url="https://my-component-library-woad.vercel.app/r/button-open-in-v0.json"
     title="JT Builds Stuff - Open in v0"
     prompt="This is a button to open a component in v0"
     />
-</Card>
+</RegistryPreview>
 
 ## Installation
 

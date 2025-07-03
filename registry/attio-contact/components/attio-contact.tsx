@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { AtSign, BriefcaseBusiness, Building2, GripVertical, IdCard, MapPin, Phone, Pilcrow, Plus, X, Check } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
@@ -30,6 +30,72 @@ import { CSS } from '@dnd-kit/utilities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+
+export interface AttioContactProps {
+    /**
+     * Initial first name value
+     */
+    initialFirstName?: string;
+    /**
+     * Initial last name value
+     */
+    initialLastName?: string;
+    /**
+     * Initial email addresses
+     */
+    initialEmails?: string[];
+    /**
+     * Initial phone numbers
+     */
+    initialPhones?: string[];
+    /**
+     * Initial city value
+     */
+    initialCity?: string;
+    /**
+     * Initial state value
+     */
+    initialState?: string;
+    /**
+     * Initial company value
+     */
+    initialCompany?: string;
+    /**
+     * Initial description value
+     */
+    initialDescription?: string;
+    /**
+     * Initial LinkedIn profile URL
+     */
+    initialLinkedin?: string;
+    /**
+     * Initial job title value
+     */
+    initialJobTitle?: string;
+    /**
+     * List of available companies for selection
+     */
+    availableCompanies?: string[];
+    /**
+     * Callback fired when form data changes
+     */
+    onChange?: (data: {
+        firstName: string;
+        lastName: string;
+        emails: string[];
+        phones: string[];
+        city: string;
+        state: string;
+        company: string;
+        description: string;
+        linkedin: string;
+        jobTitle: string;
+    }) => void;
+    /**
+     * Custom CSS class name
+     */
+    className?: string;
+}
 
 interface SortableEmailItemProps {
     id: string;
@@ -141,24 +207,39 @@ function SortablePhoneItem({ id, phone, index, onUpdate, onRemove }: SortablePho
     );
 }
 
-export default function AttioContact() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [emails, setEmails] = useState<string[]>([]);
-    const [phones, setPhones] = useState<string[]>([]);
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [company, setCompany] = useState("");
+export default function AttioContact({
+    initialFirstName = "",
+    initialLastName = "",
+    initialEmails = [],
+    initialPhones = [],
+    initialCity = "",
+    initialState = "",
+    initialCompany = "",
+    initialDescription = "",
+    initialLinkedin = "",
+    initialJobTitle = "",
+    availableCompanies,
+    onChange,
+    className
+}: AttioContactProps = {}) {
+    const [firstName, setFirstName] = useState(initialFirstName);
+    const [lastName, setLastName] = useState(initialLastName);
+    const [emails, setEmails] = useState<string[]>(initialEmails);
+    const [phones, setPhones] = useState<string[]>(initialPhones);
+    const [city, setCity] = useState(initialCity);
+    const [state, setState] = useState(initialState);
+    const [company, setCompany] = useState(initialCompany);
     const [companyOpen, setCompanyOpen] = useState(false);
     const [addCompanyDialogOpen, setAddCompanyDialogOpen] = useState(false);
     const [newCompanyName, setNewCompanyName] = useState("");
     const [newCompanyDescription, setNewCompanyDescription] = useState("");
-    const [description, setDescription] = useState("");
+    const [description, setDescription] = useState(initialDescription);
     const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
-    const [linkedin, setLinkedin] = useState("");
+    const [linkedin, setLinkedin] = useState(initialLinkedin);
+    const [jobTitle, setJobTitle] = useState(initialJobTitle);
 
     // Sample companies list - in a real app this would come from an API
-    const [companies, setCompanies] = useState([
+    const [companies, setCompanies] = useState(availableCompanies || [
         "Acme Corporation",
         "Apple Inc.",
         "Google LLC",
@@ -187,6 +268,24 @@ export default function AttioContact() {
             coordinateGetter: sortableKeyboardCoordinates,
         })
     );
+
+    // Call onChange callback when form data changes
+    useEffect(() => {
+        if (onChange) {
+            onChange({
+                firstName,
+                lastName,
+                emails,
+                phones,
+                city,
+                state,
+                company,
+                description,
+                linkedin,
+                jobTitle
+            });
+        }
+    }, [firstName, lastName, emails, phones, city, state, company, description, linkedin, jobTitle, onChange]);
 
     const getDisplayName = () => {
         const fullName = `${firstName} ${lastName}`.trim();
@@ -318,21 +417,21 @@ export default function AttioContact() {
     };
 
     return (
-        <div className="flex flex-col gap-2 text-foreground">
+        <div className={cn("@container flex flex-col gap-2 text-foreground w-full", className)}>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <IdCard className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Name</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Name</span>
                 </div>
-                <div className="w-full">
+                <div className="w-full min-w-0">
                 <Popover>
                     <PopoverTrigger className={cn(
-                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         !firstName && !lastName && "text-muted-foreground/80"
                     )}>
                         {getDisplayName()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3" align="start">
+                    <PopoverContent className="p-3 rounded-xl" align="start">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1 ">
                                 <div className="text-xs text-muted-foreground">First Name</div>
@@ -358,19 +457,19 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <AtSign className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Email</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Email</span>
                 </div>
-                <div className="w-full">
+                <div className="w-full min-w-0">
                 <Popover>
                     <PopoverTrigger className={cn(
-                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         emails.filter(email => email.trim() !== "").length === 0 && "text-muted-foreground/80"
                     )}>
                         {getDisplayEmails()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3" align="start">
+                    <PopoverContent className="p-3 rounded-xl" align="start">
                         <div className="flex flex-col gap-3">
                             <DndContext
                                 sensors={sensors}
@@ -408,13 +507,13 @@ export default function AttioContact() {
             </div>
     
             <div className="flex items-start gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] pt-2 text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] pt-2 text-muted-foreground">
                     <Pilcrow className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Description</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Description</span>
                 </div>
                 <textarea 
                     className={cn(
-                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2 resize-none focus:outline-none focus:ring-1 focus:ring-ring min-h-9",
+                        "w-full min-w-0 text-left hover:bg-secondary rounded-md py-2 px-2 resize-none focus:outline-none focus:ring-1 focus:ring-ring min-h-9",
                         !isDescriptionFocused && "overflow-hidden whitespace-nowrap text-ellipsis"
                     )}
                     placeholder="Set Description..."
@@ -447,20 +546,20 @@ export default function AttioContact() {
                 />
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <Building2 className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Company</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Company</span>
                 </div>
-                <div className="w-full">
+                <div className="w-full min-w-0">
                     <Popover open={companyOpen} onOpenChange={setCompanyOpen}>
                         <PopoverTrigger className={cn(
-                            "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                            "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                             !company && "text-muted-foreground/80"
                         )}>
                             {company ? <Badge variant="outline" className="text-sm">{company}</Badge> : "Set Company..."}
                         </PopoverTrigger>
-                        <PopoverContent className="w-full p-0" align="start">
-                            <Command>
+                        <PopoverContent className="w-full p-0 rounded-xl" align="start">
+                            <Command className="rounded-xl">
                                 <CommandInput placeholder="Search companies..." />
                                 <CommandEmpty>No company found.</CommandEmpty>
                                 <CommandGroup className="max-h-48 overflow-auto">
@@ -486,7 +585,7 @@ export default function AttioContact() {
                                 <div className="border-t px-1 py-1">
                                     <Button 
                                         variant="ghost" 
-                                        className="w-full justify-start"
+                                        className="w-full justify-start rounded-t-none"
                                         onClick={() => {
                                             setCompanyOpen(false);
                                             setAddCompanyDialogOpen(true);
@@ -502,26 +601,31 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <BriefcaseBusiness className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Title</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Title</span>
                 </div>
-                <input className="w-full text-left hover:bg-secondary rounded-md py-2 px-2" placeholder="Set Job title..." />
+                <input 
+                    className="w-full min-w-0 text-left hover:bg-secondary rounded-md py-2 px-2 truncate" 
+                    placeholder="Set Job title..." 
+                    value={jobTitle}
+                    onChange={(e) => setJobTitle(e.target.value)}
+                />
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <Phone className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Phone</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Phone</span>
                 </div>
-                <div className="w-full">
+                <div className="w-full min-w-0">
                 <Popover>
                     <PopoverTrigger className={cn(
-                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         phones.filter(phone => phone.trim() !== "").length === 0 && "text-muted-foreground/80"
                     )}>
                         {getDisplayPhones()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3" align="start">
+                    <PopoverContent className="p-3 rounded-xl" align="start">
                         <div className="flex flex-col gap-3">
                             <DndContext
                                 sensors={sensors}
@@ -558,19 +662,19 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <MapPin className="size-4 shrink-0" strokeWidth={1.5} />
-                    <span className="whitespace-nowrap">Location</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">Location</span>
                 </div>
-                <div className="w-full">
+                <div className="w-full min-w-0">
                 <Popover>
                     <PopoverTrigger className={cn(
-                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         !city && !state && "text-muted-foreground/80"
                     )}>
                         {getDisplayLocation()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3" align="start">
+                    <PopoverContent className="p-3 rounded-xl" align="start">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
                                 <div className="text-xs text-muted-foreground">City</div>
@@ -596,21 +700,21 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
+                <div className="flex items-center gap-2 text-sm @max-sm:w-8 w-[10rem] text-muted-foreground">
                     <div className="border border-muted-foreground rounded size-4 flex items-center justify-center">
                         <span className="text-xs">in</span>
                     </div>
-                    <span className="whitespace-nowrap">LinkedIn</span>
+                    <span className="whitespace-nowrap @max-sm:hidden">LinkedIn</span>
                 </div>
-                <div className="w-full">
+                <div className="w-full min-w-0">
                     <Popover>
                         <PopoverTrigger className={cn(
-                            "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                            "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                             !linkedin && "text-muted-foreground/80"
                         )}>
                             {getDisplayLinkedin()}
                         </PopoverTrigger>
-                        <PopoverContent className="p-3" align="start">
+                        <PopoverContent className="p-3 rounded-xl" align="start">
                             <div className="flex flex-col gap-1">
                                 <div className="text-xs text-muted-foreground">LinkedIn Profile URL</div>
                                 <Input 

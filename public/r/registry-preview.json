@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "registry-preview",
+  "type": "registry:component",
+  "title": "Registry Preview",
+  "description": "A resizable preview component with a dotted grid background for showcasing components in a responsive container.",
+  "registryDependencies": [
+    "card",
+    "resizable"
+  ],
+  "files": [
+    {
+      "path": "registry/registry-preview/components/registry-preview.tsx",
+      "content": "\nimport { Card } from \"@/components/ui/card\";\nimport { ResizableHandle, ResizablePanel, ResizablePanelGroup } from \"@/components/ui/resizable\";\n\nexport interface RegistryPreviewProps {\n  /**\n   * The component(s) to preview inside the resizable container\n   */\n  children: React.ReactNode;\n  /**\n   * The default size of the main panel as a percentage (0-100)\n   * @default 98\n   */\n  defaultSize?: number;\n  /**\n   * The minimum size of the main panel as a percentage (0-100)\n   * @default 5\n   */\n  minSize?: number;\n  /**\n   * The maximum size of the main panel as a percentage (0-100)\n   * @default 98\n   */\n  maxSize?: number;\n  /**\n   * The minimum height of the preview container\n   * @default \"350px\"\n   */\n  minHeight?: string;\n  /**\n   * The maximum width of the preview container\n   * @default \"4xl\"\n   */\n  maxWidth?: string;\n  /**\n   * Custom CSS class name for the container\n   */\n  className?: string;\n  /**\n   * Whether to show the dotted grid background\n   * @default true\n   */\n  showGrid?: boolean;\n}\n\nexport default function RegistryPreview({ \n  children, \n  defaultSize = 98, \n  minSize = 5, \n  maxSize = 98,\n  minHeight = \"350px\",\n  maxWidth = \"4xl\",\n  className = \"\",\n  showGrid = true\n}: RegistryPreviewProps) {\n  return (\n    <div className={`relative ${showGrid ? 'before:absolute before:inset-0 before:bg-[radial-gradient(#ccc_1px,transparent_1px)] before:bg-[length:10px_10px] before:opacity-40 dark:before:opacity-10 before:z-0' : ''} overflow-hidden ${className}`}>\n      <ResizablePanelGroup\n        direction=\"horizontal\"\n        className={`relative z-10 mx-auto rounded-lg border max-w-${maxWidth}`}\n        style={{ minHeight }}\n      >\n        <ResizablePanel defaultSize={defaultSize} minSize={minSize} maxSize={maxSize}>\n        <Card className=\"h-full w-full items-center justify-center shadow-none p-6 bg-background border-0 rounded-none\">\n            {children}\n          </Card>\n        </ResizablePanel>\n        <ResizableHandle withHandle />\n        <ResizablePanel>\n          <div className=\"h-full bg-transparent\" />\n        </ResizablePanel>\n      </ResizablePanelGroup>\n    </div>\n  );\n}",
+      "type": "registry:component",
+      "target": "components/registry-preview.tsx"
+    },
+    {
+      "path": "registry/registry-preview/app/page.tsx",
+      "content": "import RegistryPreview from \"../components/registry-preview\";\nimport { Button } from \"@/components/ui/button\";\n\nexport default function Page() {\n    return (\n        <div>\n            <RegistryPreview>\n                <Button>Preview</Button>\n            </RegistryPreview>\n        </div>\n    );\n}",
+      "type": "registry:page",
+      "target": "app/page.tsx"
+    }
+  ]
+}

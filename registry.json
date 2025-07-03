@@ -313,6 +313,28 @@
             "target": "components/ui/badge.tsx"
           }
         ]
+      },
+      {
+        "name": "registry-preview",
+        "type": "registry:component",
+        "title": "Registry Preview",
+        "description": "A resizable preview component with a dotted grid background for showcasing components in a responsive container.",
+        "registryDependencies": [
+          "card",
+          "resizable"
+        ],
+        "files": [
+          {
+            "path": "registry/registry-preview/components/registry-preview.tsx",
+            "type": "registry:component",
+            "target": "components/registry-preview.tsx"
+          },
+          {
+            "path": "registry/registry-preview/app/page.tsx",
+            "type": "registry:page",
+            "target": "app/page.tsx"
+          }
+        ]
       }
     ]
   }

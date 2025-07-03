@@ -5,19 +5,18 @@ description: A powerful file explorer component that allows you to browse and vi
 
 import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
 import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
 
 ## Preview
 
-<Card className="items-center justify-center min-h-[600px] bg-background shadow-none p-6">
+<RegistryPreview>
     <div className="w-full max-w-6xl">
         <RegistryExplorer 
           componentName="registry-explorer" 
           defaultSelectedFile="registry/registry-explorer/components/registry-explorer.tsx" 
         />
     </div>
-</Card>
+</RegistryPreview>
 
 ## Installation
 

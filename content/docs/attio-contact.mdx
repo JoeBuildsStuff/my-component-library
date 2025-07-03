@@ -6,12 +6,19 @@ description: A comprehensive contact form component inspired by Attio's design, 
 import AttioContact from "../../registry/attio-contact/components/attio-contact";
 import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
 import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "../../src/components/ui/resizable";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
+import { Button } from "@/components/ui/button";
 
 ## Preview
 
-<Card className="items-center justify-center min-h-[350px] bg-background shadow-none p-6">
-    <AttioContact />
-</Card>
+<RegistryPreview>
+  <AttioContact />
+</RegistryPreview>
 
 ## Installation
 
@@ -47,6 +54,10 @@ import AttioContact from "@/components/attio-contact"
 ```tsx
 <AttioContact />
 ```
+
+## Props
+
+<AutoTypeTable path="./registry/attio-contact/components/attio-contact.tsx" name="AttioContactProps" />
 
 ## Source Code
 

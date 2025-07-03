@@ -1,13 +1,15 @@
 {
   "pages": [
     "---Basic Components---",
-    "buttons",
     "badge",
     "logo",
     "mode-toggle",
     "---Advanced Components---",
     "attio-contact",
     "wysiwyg-editor",
+    "---Registry Components---",
+    "open-in-v0",
+    "registry-preview",
     "registry-explorer"
   ]
 } 

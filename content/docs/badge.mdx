@@ -5,13 +5,12 @@ description: Displays a badge or a component that looks like a badge with multip
 
 import { Badge } from "../../registry/ui/badge";
 import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
 
 ## Preview
 
-<Card className="items-center justify-center min-h-[350px] bg-background shadow-none p-6">
+<RegistryPreview>
     <div className="flex flex-col gap-6 items-center">
         <div className="flex flex-col gap-2 items-center">
             <div className="flex flex-wrap gap-2 justify-center">
@@ -37,7 +36,7 @@ import RegistryExplorer from "../../registry/registry-explorer/components/regist
             </div>
         </div>
     </div>
-</Card>
+</RegistryPreview>
 
 ## Installation
 
