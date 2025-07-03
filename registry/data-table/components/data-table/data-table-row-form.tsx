@@ -98,10 +98,13 @@ export function DataTableRowForm<TData extends Record<string, unknown>>({
             <Label>{label}</Label>
             <div className="flex flex-wrap gap-2">
               {options?.map((option: { label: string; value: string }) => (
-                <Badge
+                <Button
                   key={option.value}
-                  variant={selectedValues.includes(option.value) ? "default" : "outline"}
-                  className={readOnly ? "cursor-default" : "cursor-pointer"}
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={readOnly}
+                  className="h-auto p-0 hover:bg-transparent"
                   onClick={readOnly ? undefined : () => {
                     const newValues = selectedValues.includes(option.value)
                       ? selectedValues.filter((v: string) => v !== option.value)
@@ -109,8 +112,13 @@ export function DataTableRowForm<TData extends Record<string, unknown>>({
                     handleInputChange(fieldName, newValues)
                   }}
                 >
-                  {option.label}
-                </Badge>
+                  <Badge
+                    variant={selectedValues.includes(option.value) ? "default" : "outline"}
+                    className={readOnly ? "cursor-default" : "cursor-pointer"}
+                  >
+                    {option.label}
+                  </Badge>
+                </Button>
               ))}
             </div>
           </div>
