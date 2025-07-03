@@ -306,6 +306,11 @@
             "path": "registry/attio-contact/app/page.tsx",
             "type": "registry:page",
             "target": "app/page.tsx"
+          },
+          {
+            "path": "registry/ui/badge.tsx",
+            "type": "registry:component",
+            "target": "components/ui/badge.tsx"
           }
         ]
       }

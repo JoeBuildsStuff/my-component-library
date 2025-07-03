@@ -153,6 +153,9 @@ export default function AttioContact() {
     const [addCompanyDialogOpen, setAddCompanyDialogOpen] = useState(false);
     const [newCompanyName, setNewCompanyName] = useState("");
     const [newCompanyDescription, setNewCompanyDescription] = useState("");
+    const [description, setDescription] = useState("");
+    const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
+    const [linkedin, setLinkedin] = useState("");
 
     // Sample companies list - in a real app this would come from an API
     const [companies, setCompanies] = useState([
@@ -190,6 +193,19 @@ export default function AttioContact() {
         return fullName || "Set Name...";
     };
 
+    const getDisplayLinkedin = () => {
+        if (!linkedin) return "Set LinkedIn...";
+        
+        // Extract username from LinkedIn URL
+        const match = linkedin.match(/linkedin\.com\/in\/([^\/\?]+)/);
+        if (match) {
+            return <Badge variant="blue" className="text-sm">@{match[1]}</Badge>;
+        }
+        
+        // If it's not a full URL, just display as is
+        return linkedin;
+    };
+
     const getDisplayLocation = () => {
         const fullLocation = `${city}${city && state ? ', ' : ''}${state}`.trim();
         return fullLocation || "Set Primary Location...";
@@ -197,11 +213,11 @@ export default function AttioContact() {
 
     const getDisplayEmails = () => {
         if (emails.length === 0) return "Set Email addresses...";
-        if (emails.length === 1) return emails[0];
+        if (emails.length === 1) return <Badge variant="blue" className="text-sm">{emails[0]}</Badge>;
         return (
             <div className="flex items-center gap-2">
-                <span>{emails[0]}</span>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="blue" className="text-sm">{emails[0]}</Badge>
+                <Badge variant="gray" className="text-xs">
                     +{emails.length - 1}
                 </Badge>
             </div>
@@ -210,11 +226,11 @@ export default function AttioContact() {
 
     const getDisplayPhones = () => {
         if (phones.length === 0) return "Set Phone numbers...";
-        if (phones.length === 1) return phones[0];
+        if (phones.length === 1) return <Badge variant="blue" className="text-sm">{phones[0]}</Badge>;
         return (
             <div className="flex items-center gap-2">
-                <span>{phones[0]}</span>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="blue" className="text-sm">{phones[0]}</Badge>
+                <Badge variant="gray" className="text-xs">
                     +{phones.length - 1}
                 </Badge>
             </div>
@@ -300,7 +316,7 @@ export default function AttioContact() {
     };
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 text-foreground">
             <div className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2 text-sm w-[10rem]">
                     <IdCard className="size-4 shrink-0" strokeWidth={1.5} />
@@ -308,7 +324,10 @@ export default function AttioContact() {
                 </div>
                 <div className="w-full">
                 <Popover>
-                    <PopoverTrigger className="w-full text-left hover:bg-secondary rounded-md py-2 px-2">
+                    <PopoverTrigger className={cn(
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        !firstName && !lastName && "text-muted-foreground/80"
+                    )}>
                         {getDisplayName()}
                     </PopoverTrigger>
                     <PopoverContent className="p-3" align="start">
@@ -343,7 +362,10 @@ export default function AttioContact() {
                 </div>
                 <div className="w-full">
                 <Popover>
-                    <PopoverTrigger className="w-full text-left hover:bg-secondary rounded-md py-2 px-2">
+                    <PopoverTrigger className={cn(
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        emails.length === 0 && "text-muted-foreground/80"
+                    )}>
                         {getDisplayEmails()}
                     </PopoverTrigger>
                     <PopoverContent className="p-3" align="start">
@@ -383,12 +405,44 @@ export default function AttioContact() {
                 </div>
             </div>
     
-            <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+            <div className="flex items-start gap-2 justify-between">
+                <div className="flex items-center gap-2 text-sm w-[10rem] pt-2">
                     <Pilcrow className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Description</span>
                 </div>
-                <Input className="w-full" placeholder="Set Description..." />
+                <textarea 
+                    className={cn(
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2 resize-none focus:outline-none focus:ring-1 focus:ring-ring min-h-9",
+                        !isDescriptionFocused && "overflow-hidden whitespace-nowrap text-ellipsis"
+                    )}
+                    placeholder="Set Description..."
+                    rows={1}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    onFocus={(e) => {
+                        setIsDescriptionFocused(true);
+                        setTimeout(() => {
+                            const target = e.target as HTMLTextAreaElement;
+                            target.style.height = 'auto';
+                            target.style.height = Math.max(36, target.scrollHeight) + 'px';
+                        }, 0);
+                    }}
+                    onBlur={(e) => {
+                        setIsDescriptionFocused(false);
+                        const target = e.target as HTMLTextAreaElement;
+                        target.style.height = '36px';
+                    }}
+                    onInput={(e) => {
+                        if (isDescriptionFocused) {
+                            const target = e.target as HTMLTextAreaElement;
+                            target.style.height = 'auto';
+                            target.style.height = Math.max(36, target.scrollHeight) + 'px';
+                        }
+                    }}
+                    style={{
+                        height: isDescriptionFocused ? 'auto' : '36px'
+                    }}
+                />
             </div>
             <div className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2 text-sm w-[10rem]">
@@ -397,8 +451,11 @@ export default function AttioContact() {
                 </div>
                 <div className="w-full">
                     <Popover open={companyOpen} onOpenChange={setCompanyOpen}>
-                        <PopoverTrigger className="w-full text-left hover:bg-secondary rounded-md py-2 px-2">
-                            {company || "Set Company..."}
+                        <PopoverTrigger className={cn(
+                            "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                            !company && "text-muted-foreground/80"
+                        )}>
+                            {<Badge variant="outline" className="text-sm">{company || "Set Company..."}</Badge>}
                         </PopoverTrigger>
                         <PopoverContent className="w-full p-0" align="start">
                             <Command>
@@ -447,7 +504,7 @@ export default function AttioContact() {
                     <BriefcaseBusiness className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Job title</span>
                 </div>
-                <Input className="w-full" placeholder="Set Job title..." />
+                <input className="w-full text-left hover:bg-secondary rounded-md py-2 px-2" placeholder="Set Job title..." />
             </div>
             <div className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2 text-sm w-[10rem]">
@@ -456,7 +513,10 @@ export default function AttioContact() {
                 </div>
                 <div className="w-full">
                 <Popover>
-                    <PopoverTrigger className="w-full text-left hover:bg-secondary rounded-md py-2 px-2">
+                    <PopoverTrigger className={cn(
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        phones.length === 0 && "text-muted-foreground/80"
+                    )}>
                         {getDisplayPhones()}
                     </PopoverTrigger>
                     <PopoverContent className="p-3" align="start">
@@ -502,7 +562,10 @@ export default function AttioContact() {
                 </div>
                 <div className="w-full">
                 <Popover>
-                    <PopoverTrigger className="w-full text-left hover:bg-secondary rounded-md py-2 px-2">
+                    <PopoverTrigger className={cn(
+                        "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                        !city && !state && "text-muted-foreground/80"
+                    )}>
                         {getDisplayLocation()}
                     </PopoverTrigger>
                     <PopoverContent className="p-3" align="start">
@@ -537,7 +600,27 @@ export default function AttioContact() {
                     </div>
                     <span className="whitespace-nowrap">LinkedIn</span>
                 </div>
-                <Input className="w-full" />
+                <div className="w-full">
+                    <Popover>
+                        <PopoverTrigger className={cn(
+                            "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
+                            !linkedin && "text-muted-foreground/80"
+                        )}>
+                            {getDisplayLinkedin()}
+                        </PopoverTrigger>
+                        <PopoverContent className="p-3" align="start">
+                            <div className="flex flex-col gap-1">
+                                <div className="text-xs text-muted-foreground">LinkedIn Profile URL</div>
+                                <Input 
+                                    className="text-xs" 
+                                    placeholder="https://www.linkedin.com/in/username" 
+                                    value={linkedin}
+                                    onChange={(e) => setLinkedin(e.target.value)}
+                                />
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                </div>
             </div>
             <Dialog open={addCompanyDialogOpen} onOpenChange={setAddCompanyDialogOpen}>
                 <DialogContent className="sm:max-w-[425px]" onKeyDown={handleAddCompanyDialogKeyDown}>
