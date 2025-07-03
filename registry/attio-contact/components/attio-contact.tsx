@@ -212,26 +212,28 @@ export default function AttioContact() {
     };
 
     const getDisplayEmails = () => {
-        if (emails.length === 0) return "Set Email addresses...";
-        if (emails.length === 1) return <Badge variant="blue" className="text-sm">{emails[0]}</Badge>;
+        const nonEmptyEmails = emails.filter(email => email.trim() !== "");
+        if (nonEmptyEmails.length === 0) return "Set Email addresses...";
+        if (nonEmptyEmails.length === 1) return <Badge variant="blue" className="text-sm">{nonEmptyEmails[0]}</Badge>;
         return (
             <div className="flex items-center gap-2">
-                <Badge variant="blue" className="text-sm">{emails[0]}</Badge>
+                <Badge variant="blue" className="text-sm">{nonEmptyEmails[0]}</Badge>
                 <Badge variant="gray" className="text-xs">
-                    +{emails.length - 1}
+                    +{nonEmptyEmails.length - 1}
                 </Badge>
             </div>
         );
     };
 
     const getDisplayPhones = () => {
-        if (phones.length === 0) return "Set Phone numbers...";
-        if (phones.length === 1) return <Badge variant="blue" className="text-sm">{phones[0]}</Badge>;
+        const nonEmptyPhones = phones.filter(phone => phone.trim() !== "");
+        if (nonEmptyPhones.length === 0) return "Set Phone numbers...";
+        if (nonEmptyPhones.length === 1) return <Badge variant="blue" className="text-sm">{nonEmptyPhones[0]}</Badge>;
         return (
             <div className="flex items-center gap-2">
-                <Badge variant="blue" className="text-sm">{phones[0]}</Badge>
+                <Badge variant="blue" className="text-sm">{nonEmptyPhones[0]}</Badge>
                 <Badge variant="gray" className="text-xs">
-                    +{phones.length - 1}
+                    +{nonEmptyPhones.length - 1}
                 </Badge>
             </div>
         );
@@ -318,7 +320,7 @@ export default function AttioContact() {
     return (
         <div className="flex flex-col gap-2 text-foreground">
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <IdCard className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Name</span>
                 </div>
@@ -356,7 +358,7 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <AtSign className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Email</span>
                 </div>
@@ -364,7 +366,7 @@ export default function AttioContact() {
                 <Popover>
                     <PopoverTrigger className={cn(
                         "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
-                        emails.length === 0 && "text-muted-foreground/80"
+                        emails.filter(email => email.trim() !== "").length === 0 && "text-muted-foreground/80"
                     )}>
                         {getDisplayEmails()}
                     </PopoverTrigger>
@@ -406,7 +408,7 @@ export default function AttioContact() {
             </div>
     
             <div className="flex items-start gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem] pt-2">
+                <div className="flex items-center gap-2 text-sm w-[10rem] pt-2 text-muted-foreground">
                     <Pilcrow className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Description</span>
                 </div>
@@ -445,7 +447,7 @@ export default function AttioContact() {
                 />
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <Building2 className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Company</span>
                 </div>
@@ -500,14 +502,14 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <BriefcaseBusiness className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Title</span>
                 </div>
                 <input className="w-full text-left hover:bg-secondary rounded-md py-2 px-2" placeholder="Set Job title..." />
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <Phone className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Phone</span>
                 </div>
@@ -515,7 +517,7 @@ export default function AttioContact() {
                 <Popover>
                     <PopoverTrigger className={cn(
                         "w-full text-left hover:bg-secondary rounded-md py-2 px-2",
-                        phones.length === 0 && "text-muted-foreground/80"
+                        phones.filter(phone => phone.trim() !== "").length === 0 && "text-muted-foreground/80"
                     )}>
                         {getDisplayPhones()}
                     </PopoverTrigger>
@@ -556,7 +558,7 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <MapPin className="size-4 shrink-0" strokeWidth={1.5} />
                     <span className="whitespace-nowrap">Location</span>
                 </div>
@@ -594,7 +596,7 @@ export default function AttioContact() {
                 </div>
             </div>
             <div className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2 text-sm w-[10rem]">
+                <div className="flex items-center gap-2 text-sm w-[10rem] text-muted-foreground">
                     <div className="border border-muted-foreground rounded size-4 flex items-center justify-center">
                         <span className="text-xs">in</span>
                     </div>
