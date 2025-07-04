@@ -6,13 +6,13 @@ import { deleteContacts, createContact, updateContact } from "../_lib/actions"
 import { ContactAddForm, ContactEditForm } from "./contacts-form-wrapper"
 import { ColumnDef } from "@tanstack/react-table"
 
-interface DataTableAttioContactsProps {
+interface DataTableContactsProps {
   searchParams?: SearchParams
 }
 
-export default async function DataTableAttioContacts({ 
+export default async function DataTableContacts({ 
   searchParams = {} 
-}: DataTableAttioContactsProps) {
+}: DataTableContactsProps) {
   const { data, count, error } = await getContacts(searchParams)
   const { pagination } = parseSearchParams(searchParams)
 
@@ -53,7 +53,6 @@ export default async function DataTableAttioContacts({
   }>
 
   return (
-    <div className="">
       <DataTable 
         columns={tableColumns} 
         data={tableData} 
@@ -65,6 +64,5 @@ export default async function DataTableAttioContacts({
         customAddForm={AddForm}
         customEditForm={EditForm}
       />
-    </div>
   )
 }
