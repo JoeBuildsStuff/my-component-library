@@ -471,6 +471,16 @@
             "target": "app/contacts/_components/contacts-table.tsx"
           },
           {
+            "path": "registry/data-table/app/contacts/_components/contacts-form-wrapper.tsx",
+            "type": "registry:component",
+            "target": "app/contacts/_components/contacts-form-wrapper.tsx"
+          },
+          {
+            "path": "registry/data-table/app/contacts/_components/contacts-form.tsx",
+            "type": "registry:component",
+            "target": "app/contacts/_components/contacts-form.tsx"
+          },
+          {
             "path": "registry/data-table/app/contacts/_components/contacts-columns.tsx",
             "type": "registry:component",
             "target": "app/contacts/_components/contacts-columns.tsx"

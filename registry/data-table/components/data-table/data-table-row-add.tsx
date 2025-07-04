@@ -11,9 +11,18 @@ import { ColumnDef } from "@tanstack/react-table"
 interface DataTableRowAddProps<TData> {
   columns: ColumnDef<TData>[]
   createAction?: (data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
+  customForm?: React.ComponentType<{
+    onSuccess?: () => void
+    onCancel?: () => void
+    createAction?: (data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
+  }>
 }
 
-export default function DataTableRowAdd<TData>({ columns, createAction }: DataTableRowAddProps<TData>) {
+export default function DataTableRowAdd<TData>({ 
+  columns, 
+  createAction,
+  customForm: CustomForm 
+}: DataTableRowAddProps<TData>) {
   const [open, setOpen] = useState(false)
 
   const handleSuccess = () => {
@@ -41,12 +50,20 @@ export default function DataTableRowAdd<TData>({ columns, createAction }: DataTa
         </SheetHeader>
         
         <div className="flex-1 overflow-hidden">
-          <DataTableRowForm
-            columns={columns as ColumnDef<Record<string, unknown>>[]}
-            onSuccess={handleSuccess}
-            onCancel={handleCancel}
-            createAction={createAction as ((data: Partial<Record<string, unknown>>) => Promise<{ success: boolean; error?: string }>) | undefined}
-          />
+          {CustomForm ? (
+            <CustomForm
+              onSuccess={handleSuccess}
+              onCancel={handleCancel}
+              createAction={createAction}
+            />
+          ) : (
+            <DataTableRowForm
+              columns={columns as ColumnDef<Record<string, unknown>>[]}
+              onSuccess={handleSuccess}
+              onCancel={handleCancel}
+              createAction={createAction as ((data: Partial<Record<string, unknown>>) => Promise<{ success: boolean; error?: string }>) | undefined}
+            />
+          )}
         </div>
       </SheetContent>
     </Sheet>

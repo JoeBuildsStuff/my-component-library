@@ -51,6 +51,19 @@ export interface DataTableProps {
   createAction?: (data: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>
   /** Function to handle updating existing rows */
   updateAction?: (id: string, data: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>
+  /** Custom form component for adding new rows */
+  customAddForm?: React.ComponentType<{
+    onSuccess?: () => void
+    onCancel?: () => void
+    createAction?: (data: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>
+  }>
+  /** Custom form component for editing existing rows */
+  customEditForm?: React.ComponentType<{
+    data: Record<string, unknown>
+    onSuccess?: () => void
+    onCancel?: () => void
+    updateAction?: (id: string, data: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>
+  }>
 }
 
 interface DataTableInternalProps<TData, TValue> {
@@ -61,6 +74,17 @@ interface DataTableInternalProps<TData, TValue> {
   deleteAction?: (ids: string[]) => Promise<{ success: boolean; error?: string; deletedCount?: number }>
   createAction?: (data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
   updateAction?: (id: string, data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
+  customAddForm?: React.ComponentType<{
+    onSuccess?: () => void
+    onCancel?: () => void
+    createAction?: (data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
+  }>
+  customEditForm?: React.ComponentType<{
+    data: TData
+    onSuccess?: () => void
+    onCancel?: () => void
+    updateAction?: (id: string, data: Partial<TData>) => Promise<{ success: boolean; error?: string }>
+  }>
 }
 
 export function DataTable<TData, TValue>({
@@ -71,6 +95,8 @@ export function DataTable<TData, TValue>({
   deleteAction,
   createAction,
   updateAction,
+  customAddForm,
+  customEditForm,
 }: DataTableInternalProps<TData, TValue>) {
   const router = useRouter()
   const pathname = usePathname()
@@ -151,6 +177,8 @@ export function DataTable<TData, TValue>({
               deleteAction={deleteAction} 
               createAction={createAction}
               updateAction={updateAction}
+              customAddForm={customAddForm}
+              customEditForm={customEditForm}
             />
         </div>
 
