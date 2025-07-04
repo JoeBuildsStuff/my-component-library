@@ -1,11 +1,13 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AttioContact from "./contacts-form"
-import { ContactWithRelations } from "../_lib/validations"
+import { ContactWithRelations, Company } from "../_lib/validations"
 import { Button } from "@/components/ui/button"
 import { X, Plus, Save } from "lucide-react"
+import { toast } from "sonner"
+import { getCompanies } from "../_lib/actions"
 
 interface ContactFormData {
   firstName: string
@@ -21,8 +23,8 @@ interface ContactFormData {
 }
 
 // Helper function to transform form data to database format
-function transformFormDataToContact(formData: ContactFormData): Partial<ContactWithRelations> & { _emails?: string[]; _phones?: string[] } {
-  const contactData: Partial<ContactWithRelations> & { _emails?: string[]; _phones?: string[] } = {
+function transformFormDataToContact(formData: ContactFormData): Partial<ContactWithRelations> & { _emails?: string[]; _phones?: string[], company_name?: string } {
+  const contactData: Partial<ContactWithRelations> & { _emails?: string[]; _phones?: string[], company_name?: string } = {
     first_name: formData.firstName,
     last_name: formData.lastName,
     city: formData.city,
@@ -30,12 +32,13 @@ function transformFormDataToContact(formData: ContactFormData): Partial<ContactW
     description: formData.description,
     linkedin: formData.linkedin,
     job_title: formData.jobTitle,
+    company_name: formData.company,
   }
 
   // Handle company (would need to lookup company ID or create new company)
   // For now, we'll just set company_id to null
   // In a real implementation, you'd need to find or create the company
-  contactData.company_id = null
+  // contactData.company_id = null
 
   // Handle emails and phones (these would be handled separately through related tables)
   // For the MVP, we'll store them in the onChange callback and handle them in the action
@@ -58,6 +61,20 @@ export function ContactAddForm({
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<ContactFormData | null>(null)
+  const [companies, setCompanies] = useState<Company[]>([])
+
+  useEffect(() => {
+    async function fetchCompanies() {
+      const { data, error } = await getCompanies()
+      if (error) {
+        toast.error("Could not fetch companies.")
+        console.error(error)
+      } else if (data) {
+        setCompanies(data)
+      }
+    }
+    fetchCompanies()
+  }, [])
 
   const handleFormDataChange = useCallback((data: ContactFormData) => {
     setFormData(data)
@@ -76,10 +93,11 @@ export function ContactAddForm({
         onSuccess?.()
       } else {
         console.error("Failed to create contact:", result.error)
-        // You might want to show an error toast here
+        toast.error("Failed to create contact", { description: result.error })
       }
     } catch (error) {
       console.error("Error creating contact:", error)
+      toast.error("An unexpected error occurred while creating the contact.")
     } finally {
       setIsSubmitting(false)
     }
@@ -90,6 +108,7 @@ export function ContactAddForm({
       <div className="flex-1 overflow-y-auto p-4">
         <AttioContact
           onChange={handleFormDataChange}
+          availableCompanies={companies}
         />
       </div>
       
@@ -130,6 +149,20 @@ export function ContactEditForm({
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<ContactFormData | null>(null)
+  const [companies, setCompanies] = useState<Company[]>([])
+
+  useEffect(() => {
+    async function fetchCompanies() {
+      const { data, error } = await getCompanies()
+      if (error) {
+        toast.error("Could not fetch companies.")
+        console.error(error)
+      } else if (data) {
+        setCompanies(data)
+      }
+    }
+    fetchCompanies()
+  }, [])
 
   // Extract initial values from the contact data
   const initialEmails = data.emails?.map(e => e.email) || []
@@ -152,10 +185,11 @@ export function ContactEditForm({
         onSuccess?.()
       } else {
         console.error("Failed to update contact:", result.error)
-        // You might want to show an error toast here
+        toast.error("Failed to update contact", { description: result.error })
       }
     } catch (error) {
       console.error("Error updating contact:", error)
+      toast.error("An unexpected error occurred while updating the contact.")
     } finally {
       setIsSubmitting(false)
     }
@@ -176,6 +210,7 @@ export function ContactEditForm({
           initialLinkedin={data.linkedin || ""}
           initialJobTitle={data.job_title || ""}
           onChange={handleFormDataChange}
+          availableCompanies={companies}
         />
       </div>
       

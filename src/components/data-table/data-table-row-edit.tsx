@@ -53,7 +53,7 @@ export default function DataTableRowEdit<TData>({
           <Edit className="size-4 shrink-0" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col">
+      <SheetContent className="flex flex-col sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Edit Row</SheetTitle>
           <SheetDescription>Edit the selected row.</SheetDescription>

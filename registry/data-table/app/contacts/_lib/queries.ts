@@ -1,7 +1,21 @@
 import { createClient } from "@/lib/supabase/server"
 import { parseSearchParams, SearchParams } from "@/lib/data-table"
-import { ContactWithRelations } from "./validations"
+import { ContactWithRelations, Company } from "./validations"
 import { PostgrestError } from "@supabase/supabase-js"
+
+export async function getCompanies(): Promise<{
+  data: Company[],
+  error: PostgrestError | null
+}> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .schema("registry")
+    .from("companies")
+    .select("*")
+    .order("name", { ascending: true })
+  
+  return { data: data ?? [], error }
+}
 
 export async function getContacts(searchParams: SearchParams): Promise<{
   data: ContactWithRelations[],

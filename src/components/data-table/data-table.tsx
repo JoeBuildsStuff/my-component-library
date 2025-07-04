@@ -170,8 +170,8 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div>
-        <div className="pb-2">
+    <div className="">
+        <div className="pb-2 ">
             <DataTableToolbar 
               table={table} 
               deleteAction={deleteAction} 

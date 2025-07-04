@@ -43,7 +43,7 @@ export default function DataTableRowAdd<TData>({
           <Plus className="size-4 shrink-0" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col">
+      <SheetContent className="flex flex-col sm:max-w-md">
         <SheetHeader>
           <SheetTitle>Add New Row</SheetTitle>
           <SheetDescription>Add a new row to the table.</SheetDescription>

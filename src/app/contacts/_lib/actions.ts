@@ -3,19 +3,63 @@
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
 import { Contact } from "./validations"
+import { getCompanies as dbGetCompanies } from "./queries"
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 interface ContactWithExtras extends Omit<Contact, "id" | "created_at" | "updated_at"> {
   _emails?: string[]
   _phones?: string[]
+  company_name?: string
+}
+
+async function findOrCreateCompany(supabase: SupabaseClient, companyName: string | undefined): Promise<string | null> {
+    if (!companyName) return null
+
+    // Check if company exists
+    const { data: existingCompany, error: findError } = await supabase
+        .schema("registry")
+        .from("companies")
+        .select("id")
+        .eq("name", companyName)
+        .single()
+
+    if (findError && findError.code !== 'PGRST116') { // PGRST116: no rows found
+        console.error("Error finding company:", findError)
+        throw new Error(findError.message)
+    }
+
+    if (existingCompany) {
+        return existingCompany.id
+    }
+
+    // Create company if it doesn't exist
+    const { data: newCompany, error: createError } = await supabase
+        .schema("registry")
+        .from("companies")
+        .insert({ name: companyName })
+        .select("id")
+        .single()
+
+    if (createError) {
+        console.error("Error creating company:", createError)
+        throw new Error(createError.message)
+    }
+
+    return newCompany.id
 }
 
 export async function createContact(data: Record<string, unknown>) {
   const supabase = await createClient()
   
   try {
-    // Extract emails and phones from the data
-    const { _emails, _phones, ...contactData } = data as ContactWithExtras
+    // Extract emails, phones and company from the data
+    const { _emails, _phones, company_name, ...contactData } = data as ContactWithExtras
     
+    if (company_name) {
+      const companyId = await findOrCreateCompany(supabase, company_name)
+      contactData.company_id = companyId
+    }
+
     // Start a transaction by creating the contact first
     const { data: newContact, error: contactError } = await supabase
       .schema("registry")
@@ -84,7 +128,12 @@ export async function updateContact(id: string, data: Record<string, unknown>) {
   
   try {
     // Extract emails and phones from the data
-    const { _emails, _phones, ...contactData } = data as ContactWithExtras
+    const { _emails, _phones, company_name, ...contactData } = data as ContactWithExtras
+    
+    if (company_name !== undefined) {
+      const companyId = await findOrCreateCompany(supabase, company_name)
+      contactData.company_id = companyId
+    }
     
     // Update the contact
     const { data: updatedContact, error: contactError } = await supabase
@@ -174,6 +223,10 @@ export async function updateContact(id: string, data: Record<string, unknown>) {
     console.error("Unexpected error updating contact:", error)
     return { success: false, error: "An unexpected error occurred" }
   }
+}
+
+export async function getCompanies() {
+  return await dbGetCompanies()
 }
 
 export async function deleteContacts(contactIds: string[]) {
