@@ -1,6 +1,6 @@
-import DataTableExampleContacts from "@/app/contacts/_components/contacts-table";
+import DataTableAttioContacts from "./_components/contacts-table"
 
-export default async function DataTableExampleContactsPage({
+export default async function NewContactsPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -9,7 +9,7 @@ export default async function DataTableExampleContactsPage({
 
   return (
     <main className="px-3 py-10 w-full max-w-5xl mx-auto">
-      <DataTableExampleContacts searchParams={params} />
+      <DataTableAttioContacts searchParams={params} />
     </main>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { PencilRuler } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { DataTableRowForm } from "./data-table-row-form"
@@ -22,6 +23,9 @@ export default function DataTableRowEdit<TData>({ columns, selectedRows, updateA
 
   const handleSuccess = () => {
     setOpen(false)
+    toast.success("Row updated", {
+      description: "The row has been updated successfully.",
+    })
   }
 
   const handleCancel = () => {
@@ -35,14 +39,14 @@ export default function DataTableRowEdit<TData>({ columns, selectedRows, updateA
           <PencilRuler className="size-4 shrink-0" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto">
+      <SheetContent className="flex flex-col">
         <SheetHeader>
           <SheetTitle>Edit Row</SheetTitle>
           <SheetDescription>Edit the selected row in the table.</SheetDescription>
         </SheetHeader>
         
         {canEdit && editingRow && (
-          <div className="mt-6">
+          <div className="flex-1 overflow-hidden">
             <DataTableRowForm
               columns={columns as ColumnDef<Record<string, unknown>>[]}
               data={editingRow}

@@ -310,32 +310,34 @@ export function DataTableRowForm<TData extends Record<string, unknown>>({
   const fieldGroups = groupFields(formColumns)
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 px-4">
-      {/* Name fields */}
-      {fieldGroups.name.length > 0 && (
-        <div className={fieldGroups.name.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
-          {fieldGroups.name.map(renderFormField)}
-        </div>
-      )}
-      
-      {/* Contact fields */}
-      {fieldGroups.contact.length > 0 && (
-        <div className={fieldGroups.contact.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
-          {fieldGroups.contact.map(renderFormField)}
-        </div>
-      )}
-      
-      {/* Work fields */}
-      {fieldGroups.work.length > 0 && (
-        <div className={fieldGroups.work.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
-          {fieldGroups.work.map(renderFormField)}
-        </div>
-      )}
-      
-      {/* Other fields */}
-      {fieldGroups.other.map(renderFormField)}
+    <form onSubmit={handleSubmit} className="h-full flex flex-col">
+      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        {/* Name fields */}
+        {fieldGroups.name.length > 0 && (
+          <div className={fieldGroups.name.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
+            {fieldGroups.name.map(renderFormField)}
+          </div>
+        )}
+        
+        {/* Contact fields */}
+        {fieldGroups.contact.length > 0 && (
+          <div className={fieldGroups.contact.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
+            {fieldGroups.contact.map(renderFormField)}
+          </div>
+        )}
+        
+        {/* Work fields */}
+        {fieldGroups.work.length > 0 && (
+          <div className={fieldGroups.work.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
+            {fieldGroups.work.map(renderFormField)}
+          </div>
+        )}
+        
+        {/* Other fields */}
+        {fieldGroups.other.map(renderFormField)}
+      </div>
 
-      <div className="flex justify-between gap-2">
+      <div className="flex justify-between gap-2 p-4 border-t bg-background">
         <Button
           type="button"
           variant="outline"

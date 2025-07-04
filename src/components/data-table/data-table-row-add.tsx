@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Plus } from "lucide-react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { DataTableRowForm } from "./data-table-row-form"
@@ -17,6 +18,9 @@ export default function DataTableRowAdd<TData>({ columns, createAction }: DataTa
 
   const handleSuccess = () => {
     setOpen(false)
+    toast.success("Row added", {
+      description: "The new row has been successfully added.",
+    })
   }
 
   const handleCancel = () => {
@@ -30,13 +34,13 @@ export default function DataTableRowAdd<TData>({ columns, createAction }: DataTa
           <Plus className="size-4 shrink-0" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto">
+      <SheetContent className="flex flex-col">
         <SheetHeader>
           <SheetTitle>Add New Row</SheetTitle>
           <SheetDescription>Add a new row to the table.</SheetDescription>
         </SheetHeader>
         
-        <div className="mt-6">
+        <div className="flex-1 overflow-hidden">
           <DataTableRowForm
             columns={columns as ColumnDef<Record<string, unknown>>[]}
             onSuccess={handleSuccess}

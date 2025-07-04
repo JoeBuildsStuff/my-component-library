@@ -2,14 +2,15 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
-import { Contacts } from "./validations"
+import { Contact } from "./validations"
 
-export async function createContact(data: Omit<Contacts, "id" | "created_at" | "updated_at">) {
+export async function createContact(data: Omit<Contact, "id" | "created_at" | "updated_at">) {
   const supabase = await createClient()
   
   try {
     const { data: newContact, error } = await supabase
-      .from("registry_contacts")
+      .schema("registry")
+      .from("contacts")
       .insert([data])
       .select()
       .single()
@@ -19,7 +20,7 @@ export async function createContact(data: Omit<Contacts, "id" | "created_at" | "
       return { success: false, error: error.message }
     }
     
-    revalidatePath("/contacts")
+    revalidatePath("/new-contacts")
     return { success: true, data: newContact }
   } catch (error) {
     console.error("Unexpected error creating contact:", error)
@@ -27,12 +28,13 @@ export async function createContact(data: Omit<Contacts, "id" | "created_at" | "
   }
 }
 
-export async function updateContact(id: string, data: Partial<Omit<Contacts, "id" | "created_at" | "updated_at">>) {
+export async function updateContact(id: string, data: Partial<Omit<Contact, "id" | "created_at" | "updated_at">>) {
   const supabase = await createClient()
   
   try {
     const { data: updatedContact, error } = await supabase
-      .from("registry_contacts")
+      .schema("registry")
+      .from("contacts")
       .update(data)
       .eq("id", id)
       .select()
@@ -43,7 +45,7 @@ export async function updateContact(id: string, data: Partial<Omit<Contacts, "id
       return { success: false, error: error.message }
     }
     
-    revalidatePath("/contacts")
+    revalidatePath("/new-contacts")
     return { success: true, data: updatedContact }
   } catch (error) {
     console.error("Unexpected error updating contact:", error)
@@ -56,7 +58,8 @@ export async function deleteContacts(contactIds: string[]) {
   
   try {
     const { error } = await supabase
-      .from("registry_contacts")
+      .schema("registry")
+      .from("contacts")
       .delete()
       .in("id", contactIds)
     
@@ -65,7 +68,7 @@ export async function deleteContacts(contactIds: string[]) {
       return { success: false, error: error.message }
     }
     
-    revalidatePath("/contacts")
+    revalidatePath("/new-contacts")
     return { success: true, deletedCount: contactIds.length }
   } catch (error) {
     console.error("Unexpected error deleting contacts:", error)
