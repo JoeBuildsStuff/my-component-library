@@ -371,6 +371,141 @@
             "path": "registry/data-table/components/data-table/data-table.tsx",
             "type": "registry:component",
             "target": "components/data-table/data-table.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-column-header.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-column-header.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-filter.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-filter.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-filter-item.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-filter-item.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-pagination.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-pagination.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-add.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-add.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-delete.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-delete.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-edit-single.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-edit-single.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-edit-multi.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-edit-multi.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-form.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-form.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-sort.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-sort.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-sort-item.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-sort-item.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-toolbar.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-toolbar.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-view-options.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-view-options.tsx"
+          },
+          {
+            "path": "registry/data-table/components/ui/badge.tsx",
+            "type": "registry:component",
+            "target": "components/ui/badge.tsx"
+          },
+          {
+            "path": "registry/data-table/components/ui/input-number.tsx",
+            "type": "registry:component",
+            "target": "components/ui/input-number.tsx"
+          },
+          {
+            "path": "registry/data-table/lib/data-table.ts",
+            "type": "registry:lib",
+            "target": "lib/data-table.ts"
+          },
+          {
+            "path": "registry/data-table/lib/supabase/client.ts",
+            "type": "registry:lib",
+            "target": "lib/supabase/client.ts"
+          },
+          {
+            "path": "registry/data-table/lib/supabase/server.ts",
+            "type": "registry:lib",
+            "target": "lib/supabase/server.ts"
+          },
+          {
+            "path": "registry/data-table/lib/supabase/middleware.ts",
+            "type": "registry:lib",
+            "target": "lib/supabase/middleware.ts"
+          },
+          {
+            "path": "registry/data-table/app/person/page.tsx",
+            "type": "registry:page",
+            "target": "app/person/page.tsx"
+          },
+          {
+            "path": "registry/data-table/app/person/_components/person-table.tsx",
+            "type": "registry:component",
+            "target": "app/person/_components/person-table.tsx"
+          },
+          {
+            "path": "registry/data-table/app/person/_components/person-columns.tsx",
+            "type": "registry:component",
+            "target": "app/person/_components/person-columns.tsx"
+          },
+          {
+            "path": "registry/data-table/app/person/_components/person-form.tsx",
+            "type": "registry:component",
+            "target": "app/person/_components/person-form.tsx"
+          },
+          {
+            "path": "registry/data-table/app/person/_components/person-form-wrapper.tsx",
+            "type": "registry:component",
+            "target": "app/person/_components/person-form-wrapper.tsx"
+          },
+          {
+            "path": "registry/data-table/app/person/_lib/actions.ts",
+            "type": "registry:lib",
+            "target": "app/person/_lib/actions.ts"
+          },
+          {
+            "path": "registry/data-table/app/person/_lib/queries.ts",
+            "type": "registry:lib",
+            "target": "app/person/_lib/queries.ts"
+          },
+          {
+            "path": "registry/data-table/app/person/_lib/validations.ts",
+            "type": "registry:lib",
+            "target": "app/person/_lib/validations.ts"
           }
         ]
       }
