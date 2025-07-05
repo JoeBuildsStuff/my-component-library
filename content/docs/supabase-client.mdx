@@ -1,0 +1,200 @@
+---
+title: Supabase Client
+description: Supabase client utilities for browser, server, and middleware with Next.js App Router support.
+---
+
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+
+## Overview
+
+A collection of Supabase client utilities designed for Next.js App Router applications. This package provides three essential client configurations:
+
+- **Client**: Browser client for client-side operations
+- **Server**: Server client for server-side operations with cookie handling
+- **Middleware**: Middleware for session management and authentication
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/supabase-client.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the supabase client'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/supabase-client
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/supabase-client
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/supabase-client
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/supabase-client
+    ```
+</Tabs>
+
+## Environment Variables
+
+Make sure to add the following environment variables to your `.env.local` file:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## Usage
+
+### Client-side Usage
+
+Use the browser client for client-side operations:
+
+```tsx
+import { createClient } from '@/lib/supabase/client'
+
+export default function ClientComponent() {
+  const supabase = createClient()
+  
+  // Use supabase client for client-side operations
+  const handleSignIn = async () => {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: 'user@example.com',
+      password: 'password'
+    })
+  }
+  
+  return (
+    <button onClick={handleSignIn}>
+      Sign In
+    </button>
+  )
+}
+```
+
+### Server-side Usage
+
+Use the server client for server-side operations in Server Components, Route Handlers, and Server Actions:
+
+```tsx
+import { createClient } from '@/lib/supabase/server'
+
+export default async function ServerComponent() {
+  const supabase = await createClient()
+  
+  // Use supabase client for server-side operations
+  const { data: user } = await supabase.auth.getUser()
+  
+  return (
+    <div>
+      <p>Welcome, {user?.email}</p>
+    </div>
+  )
+}
+```
+
+### Middleware Usage
+
+Add the middleware to your `middleware.ts` file in the root of your project:
+
+```tsx
+import { updateSession } from '@/lib/supabase/middleware'
+
+export async function middleware(request) {
+  return await updateSession(request)
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+}
+```
+
+## Source Code
+
+<RegistryExplorer 
+  componentName="supabase-client" 
+  defaultSelectedFile="registry/supabase-client/lib/supabase/client.ts" 
+/>
+
+## Files Included
+
+This package includes three essential files:
+
+### `client.ts`
+Browser client for client-side operations using `createBrowserClient` from `@supabase/ssr`.
+
+### `server.ts`
+Server client for server-side operations with proper cookie handling using `createServerClient` from `@supabase/ssr`.
+
+### `middleware.ts`
+Middleware function for session management and authentication with automatic redirects for unauthenticated users.
+
+## Features
+
+- **SSR Support**: Full support for Server-Side Rendering with Next.js App Router
+- **Cookie Management**: Automatic cookie handling for authentication state
+- **Session Management**: Built-in session management with middleware
+- **Authentication Flow**: Automatic redirects for unauthenticated users
+- **Type Safety**: Full TypeScript support with proper typing
+
+## Authentication Flow
+
+The middleware automatically handles authentication by:
+
+1. Creating a server client with cookie support
+2. Checking for authenticated user
+3. Redirecting unauthenticated users to `/auth/login`
+4. Preserving authentication state across requests
+
+## Examples
+
+### Route Handler Example
+
+```tsx
+// app/api/profile/route.ts
+import { createClient } from '@/lib/supabase/server'
+import { NextResponse } from 'next/server'
+
+export async function GET() {
+  const supabase = await createClient()
+  
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  
+  return NextResponse.json({ user })
+}
+```
+
+### Server Action Example
+
+```tsx
+// app/actions.ts
+'use server'
+
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+
+export async function signOut() {
+  const supabase = await createClient()
+  
+  await supabase.auth.signOut()
+  revalidatePath('/', 'layout')
+}
+```
+

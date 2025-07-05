@@ -8,6 +8,8 @@
     "person-form",
     "wysiwyg-editor",
     "data-table",
+    "---Supabase Components---",
+    "supabase-client",
     "---Registry Components---",
     "open-in-v0",
     "registry-preview",
