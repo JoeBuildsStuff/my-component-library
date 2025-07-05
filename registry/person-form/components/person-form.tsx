@@ -3,10 +3,10 @@
 import { Input } from "@/components/ui/input";
 import { AtSign, BriefcaseBusiness, Building2, GripVertical, IdCard, MapPin, Phone, Pilcrow, Plus, X, Check } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import {
     DndContext,
@@ -30,6 +30,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export interface PersonFormProps {
     /**
@@ -105,7 +107,7 @@ interface SortableEmailItemProps {
     onRemove: (index: number) => void;
 }
 
-function SortableEmailItem({ id, email, index, onUpdate, onRemove }: SortableEmailItemProps) {
+const SortableEmailItem = forwardRef<HTMLInputElement, SortableEmailItemProps>(({ id, email, index, onUpdate, onRemove }, ref) => {
     const {
         attributes,
         listeners,
@@ -135,6 +137,7 @@ function SortableEmailItem({ id, email, index, onUpdate, onRemove }: SortableEma
                 <GripVertical className="size-4 shrink-0" strokeWidth={1.5} />
             </div>
             <Input 
+                ref={ref}
                 className="text-xs flex-1" 
                 placeholder="email@example.com" 
                 value={email}
@@ -150,7 +153,8 @@ function SortableEmailItem({ id, email, index, onUpdate, onRemove }: SortableEma
             </Button>
         </div>
     );
-}
+});
+SortableEmailItem.displayName = 'SortableEmailItem';
 
 interface SortablePhoneItemProps {
     id: string;
@@ -160,7 +164,7 @@ interface SortablePhoneItemProps {
     onRemove: (index: number) => void;
 }
 
-function SortablePhoneItem({ id, phone, index, onUpdate, onRemove }: SortablePhoneItemProps) {
+const SortablePhoneItem = forwardRef<HTMLInputElement, SortablePhoneItemProps>(({ id, phone, index, onUpdate, onRemove }, ref) => {
     const {
         attributes,
         listeners,
@@ -190,6 +194,7 @@ function SortablePhoneItem({ id, phone, index, onUpdate, onRemove }: SortablePho
                 <GripVertical className="size-4 shrink-0" strokeWidth={1.5} />
             </div>
             <Input 
+                ref={ref}
                 className="text-xs flex-1" 
                 placeholder="+1 (555) 123-4567" 
                 value={phone}
@@ -205,7 +210,8 @@ function SortablePhoneItem({ id, phone, index, onUpdate, onRemove }: SortablePho
             </Button>
         </div>
     );
-}
+});
+SortablePhoneItem.displayName = 'SortablePhoneItem';
 
 export default function PersonForm({
     initialFirstName = "",
@@ -225,7 +231,13 @@ export default function PersonForm({
     const [firstName, setFirstName] = useState(initialFirstName);
     const [lastName, setLastName] = useState(initialLastName);
     const [emails, setEmails] = useState<string[]>(initialEmails);
+    const [emailPopoverOpen, setEmailPopoverOpen] = useState(false);
+    const [focusLastEmail, setFocusLastEmail] = useState(false);
+    const lastEmailInputRef = useRef<HTMLInputElement>(null);
     const [phones, setPhones] = useState<string[]>(initialPhones);
+    const [phonePopoverOpen, setPhonePopoverOpen] = useState(false);
+    const [focusLastPhone, setFocusLastPhone] = useState(false);
+    const lastPhoneInputRef = useRef<HTMLInputElement>(null);
     const [city, setCity] = useState(initialCity);
     const [state, setState] = useState(initialState);
     const [company, setCompany] = useState(initialCompany);
@@ -237,6 +249,9 @@ export default function PersonForm({
     const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
     const [linkedin, setLinkedin] = useState(initialLinkedin);
     const [jobTitle, setJobTitle] = useState(initialJobTitle);
+    const [namePopoverOpen, setNamePopoverOpen] = useState(false);
+    const [locationPopoverOpen, setLocationPopoverOpen] = useState(false);
+    const [linkedinPopoverOpen, setLinkedinPopoverOpen] = useState(false);
 
     // Sample companies list - in a real app this would come from an API
     const [companies, setCompanies] = useState(availableCompanies || [
@@ -261,6 +276,49 @@ export default function PersonForm({
         "LinkedIn Corporation",
         "Uber Technologies Inc."
     ]);
+
+    useEffect(() => {
+        if (focusLastEmail) {
+            setTimeout(() => {
+                lastEmailInputRef.current?.focus();
+            }, 100); // Delay to allow popover animation to complete
+            setFocusLastEmail(false);
+        }
+    }, [focusLastEmail]);
+
+    useEffect(() => {
+        if (focusLastPhone) {
+            setTimeout(() => {
+                lastPhoneInputRef.current?.focus();
+            }, 100); // Delay to allow popover animation to complete
+            setFocusLastPhone(false);
+        }
+    }, [focusLastPhone]);
+
+    useEffect(() => {
+        setCompanies(availableCompanies || [
+            "Acme Corporation",
+            "Apple Inc.",
+            "Google LLC",
+            "Microsoft Corporation",
+            "Amazon.com Inc.",
+            "Meta Platforms Inc.",
+            "Tesla Inc.",
+            "Netflix Inc.",
+            "Salesforce Inc.",
+            "Adobe Inc.",
+            "Spotify Technology S.A.",
+            "Stripe Inc.",
+            "Shopify Inc.",
+            "Zoom Video Communications",
+            "Slack Technologies",
+            "Atlassian Corporation",
+            "Dropbox Inc.",
+            "Twitter Inc.",
+            "LinkedIn Corporation",
+            "Uber Technologies Inc."
+        ])
+    }, [availableCompanies])
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -340,6 +398,7 @@ export default function PersonForm({
 
     const addEmail = () => {
         setEmails([...emails, ""]);
+        setFocusLastEmail(true);
     };
 
     const updateEmail = (index: number, value: string) => {
@@ -353,8 +412,16 @@ export default function PersonForm({
         setEmails(newEmails);
     };
 
+    const handleEmailPopoverOpenChange = (open: boolean) => {
+        setEmailPopoverOpen(open);
+        if (open && emails.length === 0) {
+            addEmail();
+        }
+    };
+
     const addPhone = () => {
         setPhones([...phones, ""]);
+        setFocusLastPhone(true);
     };
 
     const updatePhone = (index: number, value: string) => {
@@ -366,6 +433,13 @@ export default function PersonForm({
     const removePhone = (index: number) => {
         const newPhones = phones.filter((_, i) => i !== index);
         setPhones(newPhones);
+    };
+
+    const handlePhonePopoverOpenChange = (open: boolean) => {
+        setPhonePopoverOpen(open);
+        if (open && phones.length === 0) {
+            addPhone();
+        }
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
@@ -416,6 +490,19 @@ export default function PersonForm({
         }
     };
 
+    const handlePopoverKeyDown = (e: React.KeyboardEvent, closePopover: () => void) => {
+        if (e.key === "Enter") {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.tagName === "BUTTON") {
+                // If a button is focused, click it
+                (activeElement as HTMLButtonElement).click();
+            } else {
+                // Otherwise, close the popover
+                closePopover();
+            }
+        }
+    };
+
     return (
         <div className={cn("@container flex flex-col gap-2 text-foreground w-full", className)}>
             <div className="flex items-center gap-2 justify-between">
@@ -424,14 +511,18 @@ export default function PersonForm({
                     <span className="whitespace-nowrap @max-sm:hidden">Name</span>
                 </div>
                 <div className="w-full min-w-0">
-                <Popover>
+                <Popover open={namePopoverOpen} onOpenChange={setNamePopoverOpen}>
                     <PopoverTrigger className={cn(
                         "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         !firstName && !lastName && "text-muted-foreground/80"
                     )}>
                         {getDisplayName()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3 rounded-xl" align="start">
+                    <PopoverContent 
+                        className="p-3 rounded-xl" 
+                        align="start"
+                        onKeyDown={(e) => handlePopoverKeyDown(e, () => setNamePopoverOpen(false))}
+                    >
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1 ">
                                 <div className="text-xs text-muted-foreground">First Name</div>
@@ -462,15 +553,19 @@ export default function PersonForm({
                     <span className="whitespace-nowrap @max-sm:hidden">Email</span>
                 </div>
                 <div className="w-full min-w-0">
-                <Popover>
+                <Popover open={emailPopoverOpen} onOpenChange={handleEmailPopoverOpenChange}>
                     <PopoverTrigger className={cn(
                         "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         emails.filter(email => email.trim() !== "").length === 0 && "text-muted-foreground/80"
                     )}>
                         {getDisplayEmails()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3 rounded-xl" align="start">
-                        <div className="flex flex-col gap-3">
+                    <PopoverContent 
+                        className="p-2  rounded-xl" 
+                        align="start"
+                        onKeyDown={(e) => handlePopoverKeyDown(e, () => setEmailPopoverOpen(false))}
+                    >
+                        <div className="flex flex-col gap-2">
                             <DndContext
                                 sensors={sensors}
                                 collisionDetection={closestCenter}
@@ -488,13 +583,17 @@ export default function PersonForm({
                                             index={index}
                                             onUpdate={updateEmail}
                                             onRemove={removeEmail}
+                                            ref={index === emails.length - 1 ? lastEmailInputRef : null}
                                         />
                                     ))}
                                 </SortableContext>
                             </DndContext>
+                            <Separator
+                                className=""
+                            />
                             <Button 
                                 variant="secondary" 
-                                className="flex flex-row gap-1 items-center justify-start"
+                                className="flex flex-row gap-1 items-center justify-start rounded-t-none"
                                 onClick={addEmail}
                             >
                                 <Plus className="size-4 shrink-0" strokeWidth={1.5} />
@@ -513,7 +612,7 @@ export default function PersonForm({
                 </div>
                 <textarea 
                     className={cn(
-                        "w-full min-w-0 text-left hover:bg-secondary rounded-md py-2 px-2 resize-none focus:outline-none focus:ring-1 focus:ring-ring min-h-11",
+                        "w-full min-w-0 text-left hover:bg-secondary rounded-md py-2 px-2 resize-none focus:outline-none focus:ring-1 focus:ring-ring min-h-10",
                         !isDescriptionFocused && "overflow-hidden whitespace-nowrap text-ellipsis"
                     )}
                     placeholder="Set Description..."
@@ -558,34 +657,44 @@ export default function PersonForm({
                         )}>
                             {company ? <Badge variant="outline" className="text-sm">{company}</Badge> : "Set Company..."}
                         </PopoverTrigger>
-                        <PopoverContent className="w-full p-0 rounded-xl" align="start">
-                            <Command className="rounded-xl">
+                        <PopoverContent 
+                            className="p-0 rounded-xl" 
+                            align="start"
+                            onKeyDown={(e) => handlePopoverKeyDown(e, () => setCompanyOpen(false))}
+                        >
+                            <Command className="w-full rounded-xl">
                                 <CommandInput placeholder="Search companies..." />
-                                <CommandEmpty>No company found.</CommandEmpty>
-                                <CommandGroup className="max-h-48 overflow-auto">
-                                    {companies.map((companyName) => (
-                                        <CommandItem
-                                            key={companyName}
-                                            value={companyName}
-                                            onSelect={(currentValue) => {
-                                                setCompany(currentValue === company ? "" : currentValue);
-                                                setCompanyOpen(false);
-                                            }}
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    company === companyName ? "opacity-100" : "opacity-0"
-                                                )}
-                                            />
-                                            {companyName}
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
-                                <div className="border-t px-1 py-1">
+                                <ScrollArea className="h-60 pr-2">
+                                    <CommandList className="max-h-none overflow-hidden">
+                                        <CommandEmpty>No company found.</CommandEmpty>
+                                        <CommandGroup>
+                                            {companies.map((companyName) => (
+                                                <CommandItem
+                                                    key={companyName}
+                                                    value={companyName}
+                                                    onSelect={(currentValue) => {
+                                                        setCompany(company === currentValue ? "" : currentValue);
+                                                        setCompanyOpen(false);
+                                                    }}
+                                                >
+                                                    <Check
+                                                        className={cn(
+                                                            "mr-2 h-4 w-4",
+                                                            company === companyName ? "opacity-100" : "opacity-0"
+                                                        )}
+                                                    />
+                                                    {companyName}
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </ScrollArea>
+                                <CommandSeparator />
+                                <div className="p-1 h-9">
                                     <Button 
-                                        variant="ghost" 
-                                        className="w-full justify-start rounded-t-none"
+                                        variant="secondary" 
+                                        size="sm"
+                                        className="w-full h-full justify-start rounded-t-none text-muted-foreground"
                                         onClick={() => {
                                             setCompanyOpen(false);
                                             setAddCompanyDialogOpen(true);
@@ -618,15 +727,19 @@ export default function PersonForm({
                     <span className="whitespace-nowrap @max-sm:hidden">Phone</span>
                 </div>
                 <div className="w-full min-w-0">
-                <Popover>
+                <Popover open={phonePopoverOpen} onOpenChange={handlePhonePopoverOpenChange}>
                     <PopoverTrigger className={cn(
                         "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         phones.filter(phone => phone.trim() !== "").length === 0 && "text-muted-foreground/80"
                     )}>
                         {getDisplayPhones()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3 rounded-xl" align="start">
-                        <div className="flex flex-col gap-3">
+                    <PopoverContent 
+                        className="p-2 rounded-xl" 
+                        align="start"
+                        onKeyDown={(e) => handlePopoverKeyDown(e, () => setPhonePopoverOpen(false))}
+                    >
+                        <div className="flex flex-col gap-2">
                             <DndContext
                                 sensors={sensors}
                                 collisionDetection={closestCenter}
@@ -644,13 +757,15 @@ export default function PersonForm({
                                             index={index}
                                             onUpdate={updatePhone}
                                             onRemove={removePhone}
+                                            ref={index === phones.length - 1 ? lastPhoneInputRef : null}
                                         />
                                     ))}
                                 </SortableContext>
                             </DndContext>
+                            <Separator />
                             <Button 
                                 variant="secondary" 
-                                className="flex flex-row gap-1 items-center justify-start"
+                                className="flex flex-row gap-1 items-center justify-start rounded-t-none"
                                 onClick={addPhone}
                             >
                                 <Plus className="size-4 shrink-0" strokeWidth={1.5} />
@@ -667,14 +782,18 @@ export default function PersonForm({
                     <span className="whitespace-nowrap @max-sm:hidden">Location</span>
                 </div>
                 <div className="w-full min-w-0">
-                <Popover>
+                <Popover open={locationPopoverOpen} onOpenChange={setLocationPopoverOpen}>
                     <PopoverTrigger className={cn(
                         "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                         !city && !state && "text-muted-foreground/80"
                     )}>
                         {getDisplayLocation()}
                     </PopoverTrigger>
-                    <PopoverContent className="p-3 rounded-xl" align="start">
+                    <PopoverContent 
+                        className="p-3 rounded-xl" 
+                        align="start"
+                        onKeyDown={(e) => handlePopoverKeyDown(e, () => setLocationPopoverOpen(false))}
+                    >
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
                                 <div className="text-xs text-muted-foreground">City</div>
@@ -707,14 +826,18 @@ export default function PersonForm({
                     <span className="whitespace-nowrap @max-sm:hidden">LinkedIn</span>
                 </div>
                 <div className="w-full min-w-0">
-                    <Popover>
+                    <Popover open={linkedinPopoverOpen} onOpenChange={setLinkedinPopoverOpen}>
                         <PopoverTrigger className={cn(
                             "w-full text-left hover:bg-secondary rounded-md py-2 px-2 truncate",
                             !linkedin && "text-muted-foreground/80"
                         )}>
                             {getDisplayLinkedin()}
                         </PopoverTrigger>
-                        <PopoverContent className="p-3 rounded-xl" align="start">
+                        <PopoverContent 
+                            className="p-3 rounded-xl" 
+                            align="start"
+                            onKeyDown={(e) => handlePopoverKeyDown(e, () => setLinkedinPopoverOpen(false))}
+                        >
                             <div className="flex flex-col gap-1">
                                 <div className="text-xs text-muted-foreground">LinkedIn Profile URL</div>
                                 <Input 
