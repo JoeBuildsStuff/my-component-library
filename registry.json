@@ -535,6 +535,104 @@
           "target": "lib/supabase/middleware.ts"
         }
       ]
+    },
+    {
+      "name": "supabase-auth",
+      "type": "registry:block",
+      "title": "Supabase Auth",
+      "description": "Complete authentication system with Supabase including sign in/up, password reset, OTP verification, magic links, and OAuth providers (Google, GitHub). Features passwordless options, comprehensive error handling, and responsive UI.",
+      "dependencies": [
+        "@supabase/ssr",
+        "@supabase/supabase-js",
+        "next",
+        "zod",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "card",
+        "button",
+        "input",
+        "label",
+        "alert",
+        "input-otp"
+      ],
+      "files": [
+        {
+          "path": "registry/supabase-auth/actions/auth.ts",
+          "type": "registry:lib",
+          "target": "actions/auth.ts"
+        },
+        {
+          "path": "registry/supabase-auth/lib/supabase/client.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/client.ts"
+        },
+        {
+          "path": "registry/supabase-auth/lib/supabase/server.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/server.ts"
+        },
+        {
+          "path": "registry/supabase-auth/lib/supabase/middleware.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/middleware.ts"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/layout.tsx",
+          "type": "registry:component",
+          "target": "app/(auth)/layout.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/signin/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/signin/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/signin/password/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/signin/password/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/signin/password/reset/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/signin/password/reset/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/signup/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/signup/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/signup/password/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/signup/password/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/verify-email/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/verify-email/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/verify-otp/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/verify-otp/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/update-password/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/update-password/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/update-password/check-email/page.tsx",
+          "type": "registry:page",
+          "target": "app/(auth)/update-password/check-email/page.tsx"
+        },
+        {
+          "path": "registry/supabase-auth/(Auth)/auth/callback/route.ts",
+          "type": "registry:file",
+          "target": "app/(auth)/auth/callback/route.ts"
+        }
+      ]
     }
   ]
 }

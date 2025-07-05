@@ -10,6 +10,7 @@
     "data-table",
     "---Supabase Components---",
     "supabase-client",
+    "supabase-auth",
     "---Registry Components---",
     "open-in-v0",
     "registry-preview",
