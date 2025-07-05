@@ -1,0 +1,68 @@
+---
+title: Person Form
+description: A comprehensive contact form component inspired by Attio's design, featuring drag-and-drop sortable email and phone fields, company selection with search, and popover-based field editing.
+---
+
+import PersonForm from "../../registry/person-form/components/person-form";
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "../../src/components/ui/resizable";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
+import { Button } from "@/components/ui/button";
+
+## Preview
+
+<RegistryPreview>
+  <PersonForm />
+</RegistryPreview>
+
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/person-form.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the person-form'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/person-form
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/person-form
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/person-form
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/person-form
+    ```
+</Tabs>
+
+## Usage
+
+```tsx
+import PersonForm from "@/components/person-form"
+```
+
+```tsx
+<PersonForm />
+```
+
+## Props
+
+<AutoTypeTable path="./registry/person-form/components/person-form.tsx" name="PersonFormProps" />
+
+## Source Code
+
+<RegistryExplorer 
+  componentName="person-form" 
+  defaultSelectedFile="registry/person-form/components/person-form.tsx" 
+/>

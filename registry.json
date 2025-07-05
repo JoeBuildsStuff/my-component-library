@@ -276,45 +276,6 @@
         ]
       },
       {
-        "name": "attio-contact",
-        "type": "registry:block",
-        "title": "Attio Contact Form",
-        "description": "A comprehensive contact form component inspired by Attio's design, featuring drag-and-drop sortable email and phone fields, company selection with search, and popover-based field editing.",
-        "dependencies": [
-          "lucide-react",
-          "@dnd-kit/core",
-          "@dnd-kit/sortable",
-          "@dnd-kit/utilities"
-        ],
-        "registryDependencies": [
-          "input",
-          "button",
-          "badge",
-          "popover",
-          "command",
-          "dialog",
-          "textarea",
-          "label"
-        ],
-        "files": [
-          {
-            "path": "registry/attio-contact/components/attio-contact.tsx",
-            "type": "registry:component",
-            "target": "components/attio-contact.tsx"
-          },
-          {
-            "path": "registry/attio-contact/app/page.tsx",
-            "type": "registry:page",
-            "target": "app/page.tsx"
-          },
-          {
-            "path": "registry/ui/badge.tsx",
-            "type": "registry:component",
-            "target": "components/ui/badge.tsx"
-          }
-        ]
-      },
-      {
         "name": "registry-preview",
         "type": "registry:component",
         "title": "Registry Preview",
@@ -337,37 +298,73 @@
         ]
       },
       {
+        "name": "person-form",
+        "type": "registry:component",
+        "title": "Person Form",
+        "description": "A comprehensive form component for managing person/contact information with drag-and-drop email/phone management, company selection, and inline editing capabilities.",
+        "dependencies": [
+          "lucide-react",
+          "@dnd-kit/core",
+          "@dnd-kit/sortable",
+          "@dnd-kit/utilities"
+        ],
+        "registryDependencies": [
+          "input",
+          "button",
+          "badge",
+          "popover",
+          "command",
+          "dialog",
+          "textarea",
+          "label",
+          "separator",
+          "scroll-area"
+        ],
+        "files": [
+          {
+            "path": "registry/person-form/components/person-form.tsx",
+            "type": "registry:component",
+            "target": "components/person-form.tsx"
+          },
+          {
+            "path": "registry/person-form/app/page.tsx",
+            "type": "registry:page",
+            "target": "app/page.tsx"
+          }
+        ]
+      },
+      {
         "name": "data-table",
         "type": "registry:block",
         "title": "Data Table",
-        "description": "A comprehensive data table component with advanced filtering, sorting, pagination, column management, and CRUD operations. Features drag-and-drop reordering, multi-column filtering with various operators, and form-based row editing.",
+        "description": "A comprehensive data table component with advanced filtering, sorting, pagination, row editing, and CRUD operations. Includes support for custom forms and Supabase integration.",
         "dependencies": [
           "@tanstack/react-table",
+          "@supabase/supabase-js",
+          "lucide-react",
           "@dnd-kit/core",
           "@dnd-kit/sortable",
           "@dnd-kit/utilities",
-          "react-aria-components",
-          "date-fns",
-          "next",
-          "lucide-react"
+          "sonner",
+          "next"
         ],
         "registryDependencies": [
           "table",
           "button",
           "input",
-          "label",
-          "textarea",
-          "badge",
           "select",
-          "switch",
-          "calendar",
+          "checkbox",
+          "badge",
           "popover",
           "command",
-          "checkbox",
           "dropdown-menu",
-          "alert-dialog",
           "sheet",
-          "separator"
+          "dialog",
+          "alert-dialog",
+          "separator",
+          "calendar",
+          "scroll-area",
+          "input-number"
         ],
         "files": [
           {
@@ -406,9 +403,14 @@
             "target": "components/data-table/data-table-row-delete.tsx"
           },
           {
-            "path": "registry/data-table/components/data-table/data-table-row-edit.tsx",
+            "path": "registry/data-table/components/data-table/data-table-row-edit-single.tsx",
             "type": "registry:component",
-            "target": "components/data-table/data-table-row-edit.tsx"
+            "target": "components/data-table/data-table-row-edit-single.tsx"
+          },
+          {
+            "path": "registry/data-table/components/data-table/data-table-row-edit-multi.tsx",
+            "type": "registry:component",
+            "target": "components/data-table/data-table-row-edit-multi.tsx"
           },
           {
             "path": "registry/data-table/components/data-table/data-table-row-form.tsx",
@@ -436,6 +438,11 @@
             "target": "components/data-table/data-table-view-options.tsx"
           },
           {
+            "path": "registry/data-table/components/ui/badge.tsx",
+            "type": "registry:component",
+            "target": "components/ui/badge.tsx"
+          },
+          {
             "path": "registry/data-table/components/ui/input-number.tsx",
             "type": "registry:component",
             "target": "components/ui/input-number.tsx"
@@ -461,44 +468,44 @@
             "target": "lib/supabase/middleware.ts"
           },
           {
-            "path": "registry/data-table/app/contacts/page.tsx",
+            "path": "registry/data-table/app/person/page.tsx",
             "type": "registry:page",
-            "target": "app/contacts/page.tsx"
+            "target": "app/person/page.tsx"
           },
           {
-            "path": "registry/data-table/app/contacts/_components/contacts-table.tsx",
+            "path": "registry/data-table/app/person/_components/person-table.tsx",
             "type": "registry:component",
-            "target": "app/contacts/_components/contacts-table.tsx"
+            "target": "app/person/_components/person-table.tsx"
           },
           {
-            "path": "registry/data-table/app/contacts/_components/contacts-form-wrapper.tsx",
+            "path": "registry/data-table/app/person/_components/person-columns.tsx",
             "type": "registry:component",
-            "target": "app/contacts/_components/contacts-form-wrapper.tsx"
+            "target": "app/person/_components/person-columns.tsx"
           },
           {
-            "path": "registry/data-table/app/contacts/_components/contacts-form.tsx",
+            "path": "registry/data-table/app/person/_components/person-form.tsx",
             "type": "registry:component",
-            "target": "app/contacts/_components/contacts-form.tsx"
+            "target": "app/person/_components/person-form.tsx"
           },
           {
-            "path": "registry/data-table/app/contacts/_components/contacts-columns.tsx",
+            "path": "registry/data-table/app/person/_components/person-form-wrapper.tsx",
             "type": "registry:component",
-            "target": "app/contacts/_components/contacts-columns.tsx"
+            "target": "app/person/_components/person-form-wrapper.tsx"
           },
           {
-            "path": "registry/data-table/app/contacts/_lib/actions.ts",
+            "path": "registry/data-table/app/person/_lib/actions.ts",
             "type": "registry:lib",
-            "target": "app/contacts/_lib/actions.ts"
+            "target": "app/person/_lib/actions.ts"
           },
           {
-            "path": "registry/data-table/app/contacts/_lib/queries.ts",
+            "path": "registry/data-table/app/person/_lib/queries.ts",
             "type": "registry:lib",
-            "target": "app/contacts/_lib/queries.ts"
+            "target": "app/person/_lib/queries.ts"
           },
           {
-            "path": "registry/data-table/app/contacts/_lib/validations.ts",
+            "path": "registry/data-table/app/person/_lib/validations.ts",
             "type": "registry:lib",
-            "target": "app/contacts/_lib/validations.ts"
+            "target": "app/person/_lib/validations.ts"
           }
         ]
       }
