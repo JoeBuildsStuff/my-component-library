@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { Payment } from "../_lib/types"
-import { DataTableColumnHeader } from "../../../../components/data-table-basic/data-table-column-header"
+import { DataTableColumnHeader } from "@/components/data-table-basic/data-table-column-header"
 import { Checkbox } from "@/components/ui/checkbox"
 
 export const columns: ColumnDef<Payment>[] = [

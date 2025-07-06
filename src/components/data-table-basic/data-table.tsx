@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table"
 import DataTableToolbar from "./data-table-toolbar"
 import { DataTablePagination } from "./data-table-pagination"
-import { parseSearchParams, serializeTableState, updateSearchParams as updateUrlSearchParams, DataTableState } from "../../lib/data-table"
+import { parseSearchParams, serializeTableState, updateSearchParams as updateUrlSearchParams, DataTableState } from "@/lib/data-table"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
