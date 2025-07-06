@@ -10,6 +10,7 @@
     "wysiwyg-editor",
     "data-table-basic",
     "data-table",
+    "app-sidebar",
     "---Supabase Components---",
     "supabase-client",
     "supabase-auth",

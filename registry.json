@@ -780,6 +780,92 @@
           "target": "app/(auth)/auth/callback/route.ts"
         }
       ]
+    },
+    {
+      "name": "app-sidebar",
+      "type": "registry:block",
+      "title": "App Sidebar",
+      "description": "A comprehensive application sidebar with authentication, user profile management, theme switching, and dynamic breadcrumbs. Features Supabase integration, responsive design, and customizable navigation items with action buttons.",
+      "dependencies": [
+        "@supabase/ssr",
+        "next",
+        "next-themes",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "sidebar",
+        "dropdown-menu",
+        "avatar",
+        "card",
+        "breadcrumb"
+      ],
+      "files": [
+        {
+          "path": "registry/app-sidebar/lib/supabase/client.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/client.ts"
+        },
+        {
+          "path": "registry/app-sidebar/lib/supabase/server.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/server.ts"
+        },
+        {
+          "path": "registry/app-sidebar/lib/supabase/middleware.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/middleware.ts"
+        },
+        {
+          "path": "registry/app-sidebar/hooks/use-current-user-name.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-current-user-name.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/hooks/use-current-user-email.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-current-user-email.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/hooks/use-current-user-image.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-current-user-image.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/components/current-user-avatar.tsx",
+          "type": "registry:component",
+          "target": "components/current-user-avatar.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/components/auth-button.tsx",
+          "type": "registry:component",
+          "target": "components/auth-button.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/components/app-sidebar.tsx",
+          "type": "registry:component",
+          "target": "components/app-sidebar.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/components/app-sidebar-logo.tsx",
+          "type": "registry:component",
+          "target": "components/app-sidebar-logo.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/components/ui/dynamic-breadcrumbs.tsx",
+          "type": "registry:component",
+          "target": "components/ui/dynamic-breadcrumbs.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/app/(app)/layout.tsx",
+          "type": "registry:file",
+          "target": "app/(app)/layout.tsx"
+        },
+        {
+          "path": "registry/app-sidebar/app/(app)/page.tsx",
+          "type": "registry:page",
+          "target": "app/(app)/page.tsx"
+        }
+      ]
     }
   ]
 }
