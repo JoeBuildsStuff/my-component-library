@@ -652,6 +652,38 @@
       ]
     },
     {
+      "name": "layout-with-providers",
+      "type": "registry:block",
+      "title": "Layout with Providers",
+      "description": "A complete Next.js layout setup with theme provider, sidebar provider, and toast notifications. Includes Geist fonts and proper provider composition for modern React applications.",
+      "dependencies": [
+        "next-themes",
+        "next",
+        "geist"
+      ],
+      "registryDependencies": [
+        "sidebar",
+        "sonner"
+      ],
+      "files": [
+        {
+          "path": "registry/layout-and-providers/app/layout.tsx",
+          "type": "registry:file",
+          "target": "app/layout.tsx"
+        },
+        {
+          "path": "registry/layout-and-providers/components/providers.tsx",
+          "type": "registry:component",
+          "target": "components/providers.tsx"
+        },
+        {
+          "path": "registry/layout-and-providers/components/theme-provider.tsx",
+          "type": "registry:component",
+          "target": "components/theme-provider.tsx"
+        }
+      ]
+    },
+    {
       "name": "supabase-auth",
       "type": "registry:block",
       "title": "Supabase Auth",

@@ -1,0 +1,256 @@
+---
+title: Layout with Providers
+description: A complete Next.js layout setup with theme provider, sidebar provider, and toast notifications
+---
+
+import { OpenInV0Button } from "../../registry/ui/buttons/button-open-in-v0";
+import RegistryExplorer from "../../registry/registry-explorer/components/registry-explorer";
+import RegistryPreview from "../../registry/registry-preview/components/registry-preview";
+
+## Overview
+
+A complete Next.js layout setup that includes theme provider, sidebar provider, and toast notifications. This component provides a solid foundation for modern React applications with proper provider composition, Geist fonts, and essential UI providers.
+
+## Installation
+
+<div className="w-full flex justify-end">
+    <OpenInV0Button url="https://my-component-library-woad.vercel.app/r/layout-with-providers.json" />
+</div>
+
+<Tabs groupId='package-manager' persist items={['npm', 'pnpm', 'yarn', 'bun']} label='Install the layout with providers'>
+
+    ```bash tab="npm"
+    npx shadcn@latest add https://my-component-library-woad.vercel.app/r/layout-with-providers.json
+    ```
+
+    ```bash tab="pnpm"
+    pnpm dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/layout-with-providers.json
+    ```
+
+    ```bash tab="yarn"
+    yarn dlx shadcn@latest add https://my-component-library-woad.vercel.app/r/layout-with-providers.json
+    ```
+
+    ```bash tab="bun"
+    bunx --bun shadcn@latest add https://my-component-library-woad.vercel.app/r/layout-with-providers.json
+    ```
+</Tabs>
+
+## Usage
+
+After installation, your app will have a complete layout setup. The layout includes:
+
+- **Geist Fonts**: Modern, clean typography with Geist Sans and Geist Mono
+- **Theme Provider**: Support for light, dark, and system themes
+- **Sidebar Provider**: Context for sidebar state management
+- **Toast Notifications**: Global toast notification system
+
+```tsx
+// app/layout.tsx (automatically installed)
+import { Providers } from "@/components/providers"
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  )
+}
+```
+
+## Source Code
+
+<RegistryExplorer 
+  componentName="layout-with-providers" 
+  defaultSelectedFile="registry/layout-and-providers/app/layout.tsx" 
+/>
+
+## Components Included
+
+### 1. Layout (`app/layout.tsx`)
+
+The main Next.js layout file with:
+- Geist font configuration
+- Metadata setup
+- Providers wrapper
+- Proper HTML structure
+
+### 2. Providers (`components/providers.tsx`)
+
+A composite provider component that includes:
+- **ThemeProvider**: For theme switching functionality
+- **SidebarProvider**: For sidebar state management
+- **Toaster**: For toast notifications
+
+### 3. Theme Provider (`components/theme-provider.tsx`)
+
+A wrapper around `next-themes` that provides:
+- Theme switching capabilities
+- System theme detection
+- Smooth theme transitions
+
+## Features
+
+### Theme Management
+
+The layout includes a complete theme management system:
+
+```tsx
+// Theme switching is automatically available throughout your app
+import { useTheme } from "next-themes"
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  
+  return (
+    <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+      Toggle theme
+    </button>
+  )
+}
+```
+
+### Sidebar Integration
+
+Sidebar functionality is built-in and ready to use:
+
+```tsx
+// Sidebar components work out of the box
+import { useSidebar } from "@/components/ui/sidebar"
+
+function SidebarToggle() {
+  const { toggleSidebar } = useSidebar()
+  
+  return (
+    <button onClick={toggleSidebar}>
+      Toggle Sidebar
+    </button>
+  )
+}
+```
+
+### Toast Notifications
+
+Global toast system is automatically configured:
+
+```tsx
+// Toast notifications work anywhere in your app
+import { toast } from "sonner"
+
+function NotifyButton() {
+  return (
+    <button onClick={() => toast.success("Hello world!")}>
+      Show Toast
+    </button>
+  )
+}
+```
+
+## Typography
+
+The layout includes Geist fonts which provide:
+
+- **Geist Sans**: Clean, modern sans-serif for UI text
+- **Geist Mono**: Monospace font for code and technical content
+- **CSS Variables**: `--font-geist-sans` and `--font-geist-mono`
+
+## Dependencies
+
+This component automatically installs and configures:
+
+- `next-themes` - Theme management
+- `next` - Next.js framework
+- `geist` - Geist font family
+- `@/components/ui/sidebar` - Sidebar components
+- `sonner` - Toast notifications
+
+## Best Practices
+
+### Provider Order
+
+The providers are composed in the correct order:
+1. **ThemeProvider** (outermost) - Provides theme context
+2. **SidebarProvider** - Provides sidebar state
+3. **Toaster** - Renders toast notifications
+
+### Performance
+
+- Fonts are optimized with `variable` strategy
+- Theme transitions are disabled by default for better performance
+- Providers are memoized to prevent unnecessary re-renders
+
+### Accessibility
+
+- Proper HTML structure with semantic elements
+- Theme switching respects user preferences
+- Font loading is optimized for screen readers
+
+## Customization
+
+### Modifying Providers
+
+You can easily extend the providers:
+
+```tsx
+// components/providers.tsx
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <SidebarProvider>
+        {/* Add your custom providers here */}
+        <YourCustomProvider>
+          {children}
+          <Toaster />
+        </YourCustomProvider>
+      </SidebarProvider>
+    </ThemeProvider>
+  )
+}
+```
+
+### Font Customization
+
+Modify the font configuration in `layout.tsx`:
+
+```tsx
+// Change font subsets or add additional fonts
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin", "latin-ext"], // Add more subsets
+});
+```
+
+## Next Steps
+
+### Add Theme Toggle
+
+Since this layout includes theme provider functionality, you'll likely want to add a theme toggle component for users to switch between light and dark modes:
+
+[Mode Toggle Component →](/docs/mode-toggle)
+
+The mode toggle works seamlessly with the theme provider included in this layout.
+
+## Examples
+
+This layout setup is perfect for:
+
+- **Dashboard Applications**: With sidebar navigation and theme switching
+- **Content Management Systems**: With rich text editing and notifications
+- **SaaS Applications**: With user preferences and responsive design
+- **Documentation Sites**: With clean typography and theme support
+
+The layout provides a solid foundation that works seamlessly with all shadcn/ui components and follows modern React patterns for provider composition.
+

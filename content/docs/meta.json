@@ -1,9 +1,10 @@
 {
   "pages": [
     "---Basic Components---",
+    "layout-with-providers",
+    "mode-toggle",
     "badge",
     "logo",
-    "mode-toggle",
     "---Advanced Components---",
     "person-form",
     "wysiwyg-editor",
