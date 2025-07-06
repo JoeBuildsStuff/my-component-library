@@ -13,7 +13,7 @@ export async function deletePayments(ids: string[]): Promise<{
     const supabase = await createClient()
     
     const { error, count } = await supabase
-      .from('my_nextjs_supabase_starter_app_payments_example')
+      .from('payments')
       .delete({ count: 'exact' })
       .in('id', ids)
 
@@ -65,7 +65,7 @@ export async function createPayment(data: Partial<Payment>): Promise<{
     }
     
     const { data: result, error } = await supabase
-      .from('my_nextjs_supabase_starter_app_payments_example')
+      .from('payments')
       .insert([insertData])
       .select()
       .single()
@@ -110,7 +110,7 @@ export async function updatePayment(
     delete updateData.id
     
     const { data: result, error } = await supabase
-      .from('my_nextjs_supabase_starter_app_payments_example')
+      .from('payments')
       .update(updateData)
       .eq('id', id)
       .select()
@@ -156,7 +156,7 @@ export async function updatePayments(
     delete updateData.id
     
     const { error, count } = await supabase
-      .from('my_nextjs_supabase_starter_app_payments_example')
+      .from('payments')
       .update(updateData, { count: 'exact' })
       .in('id', ids)
 

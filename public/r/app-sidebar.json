@@ -85,16 +85,16 @@
       "target": "components/ui/dynamic-breadcrumbs.tsx"
     },
     {
-      "path": "registry/app-sidebar/app/(app)/layout.tsx",
+      "path": "registry/app-sidebar/app/(app)/workspace/layout.tsx",
       "content": "import { AppSidebar } from \"@/components/app-sidebar\"; \nimport { DynamicBreadcrumbs } from \"@/components/ui/dynamic-breadcrumbs\";\n\nimport { SidebarProvider, SidebarTrigger } from \"@/components/ui/sidebar\"; \n\nexport default function RootLayout({\nchildren,\n}: Readonly<{\nchildren: React.ReactNode;\n}>) {\nreturn (  \n    <SidebarProvider> \n      <AppSidebar /> \n      <main className=\"flex-1 overflow-auto px-4 grid grid-rows-[auto_1fr] \"> \n        <header className=\"flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12\">\n          <div className=\"flex items-center gap-2 flex-grow\">\n            <SidebarTrigger className=\"-ml-1\" /> \n            <DynamicBreadcrumbs />\n          </div>\n        </header>\n        <div className=\"mb-4 overflow-auto\">\n          {children}\n        </div>\n      </main>\n    </SidebarProvider>  \n  );\n}",
       "type": "registry:file",
-      "target": "app/(app)/layout.tsx"
+      "target": "app/(app)/workspace/layout.tsx"
     },
     {
-      "path": "registry/app-sidebar/app/(app)/page.tsx",
+      "path": "registry/app-sidebar/app/(app)/workspace/page.tsx",
       "content": "import { Card } from \"@/components/ui/card\";\nimport { SidebarProvider, SidebarTrigger } from \"@/components/ui/sidebar\";\nimport { AppSidebar } from \"@/components/app-sidebar\";\nimport { DynamicBreadcrumbs } from \"@/components/ui/dynamic-breadcrumbs\";\n\n\nexport default function Page() {\n\n  <SidebarProvider> \n  <AppSidebar /> \n  <main className=\"flex-1 overflow-auto px-4 grid grid-rows-[auto_1fr] \"> \n    <header className=\"flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12\">\n      <div className=\"flex items-center gap-2 flex-grow\">\n        <SidebarTrigger className=\"-ml-1\" /> \n        <DynamicBreadcrumbs />\n      </div>\n    </header>\n    <div className=\"mb-4 overflow-auto\">\n    <div className=\"flex flex-col w-full h-full items-center justify-center\">\n    <Card className=\"w-full h-full bg-background\">\n        {/* This is the app content */}\n    </Card>\n  </div>;\n    </div>\n  </main>\n</SidebarProvider>  \n}",
       "type": "registry:page",
-      "target": "app/(app)/page.tsx"
+      "target": "app/(app)/workspace/page.tsx"
     }
   ]
 }

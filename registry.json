@@ -856,14 +856,14 @@
           "target": "components/ui/dynamic-breadcrumbs.tsx"
         },
         {
-          "path": "registry/app-sidebar/app/(app)/layout.tsx",
+          "path": "registry/app-sidebar/app/(app)/workspace/layout.tsx",
           "type": "registry:file",
-          "target": "app/(app)/layout.tsx"
+          "target": "app/(app)/workspace/layout.tsx"
         },
         {
-          "path": "registry/app-sidebar/app/(app)/page.tsx",
+          "path": "registry/app-sidebar/app/(app)/workspace/page.tsx",
           "type": "registry:page",
-          "target": "app/(app)/page.tsx"
+          "target": "app/(app)/workspace/page.tsx"
         }
       ]
     }

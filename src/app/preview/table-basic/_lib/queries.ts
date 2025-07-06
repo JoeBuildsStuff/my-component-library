@@ -15,12 +15,12 @@ export async function getPayments(
 
   // Get total count
   const { count } = await supabase
-    .from('my_nextjs_supabase_starter_app_payments_example')
+    .from('payments')
     .select('*', { count: 'exact', head: true })
 
   // Build the query with sorting
   let query = supabase
-    .from('my_nextjs_supabase_starter_app_payments_example')
+    .from('payments')
     .select('*')
     .range(from, to)
 
@@ -37,6 +37,7 @@ export async function getPayments(
   const { data, error } = await query
 
   if (error) {
+    console.error(error)
     throw new Error('Failed to fetch payments')
   }
 
