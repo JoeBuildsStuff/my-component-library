@@ -66,7 +66,7 @@ export function LLMCopyButton({ slug }: { slug: string[] }) {
   );
 
   export function ViewOptions(props: { markdownUrl: string; githubUrl: string }) {
-    const markdownUrl = new URL(props.markdownUrl, 'https://my-component-library-woad.vercel.app/');
+    const markdownUrl = new URL(props.markdownUrl, 'https://jt-components.vercel.app/');
     const q = `Read ${markdownUrl}, I want to ask questions about it.`;
   
     const claude = `https://claude.ai/new?${new URLSearchParams({
