@@ -69,7 +69,6 @@
       "title": "Badge",
       "description": "Displays a badge or a component that looks like a badge with multiple color variants.",
       "dependencies": [
-        "@radix-ui/react-slot",
         "class-variance-authority"
       ],
       "files": [
@@ -93,6 +92,23 @@
           "path": "registry/ui/logo.tsx",
           "type": "registry:component",
           "target": "components/ui/logo.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input-number",
+      "type": "registry:ui",
+      "title": "Input Number",
+      "description": "A number input component with increment/decrement buttons and optional unit display.",
+      "dependencies": [
+        "lucide-react",
+        "react-aria-components"
+      ],
+      "files": [
+        {
+          "path": "registry/ui/input-number.tsx",
+          "type": "registry:component",
+          "target": "components/ui/input-number.tsx"
         }
       ]
     },
@@ -437,16 +453,7 @@
           "type": "registry:component",
           "target": "components/data-table/data-table-view-options.tsx"
         },
-        {
-          "path": "registry/data-table/components/ui/badge.tsx",
-          "type": "registry:component",
-          "target": "components/ui/badge.tsx"
-        },
-        {
-          "path": "registry/data-table/components/ui/input-number.tsx",
-          "type": "registry:component",
-          "target": "components/ui/input-number.tsx"
-        },
+
         {
           "path": "registry/data-table/lib/data-table.ts",
           "type": "registry:lib",

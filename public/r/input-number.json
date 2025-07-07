@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input-number",
+  "type": "registry:ui",
+  "title": "Input Number",
+  "description": "A number input component with increment/decrement buttons and optional unit display.",
+  "dependencies": [
+    "lucide-react",
+    "react-aria-components"
+  ],
+  "files": [
+    {
+      "path": "registry/ui/input-number.tsx",
+      "content": "\"use client\"\n\nimport { ChevronDownIcon, ChevronUpIcon } from \"lucide-react\"\nimport { Button, Group, Input, NumberField as AriaNumberField } from \"react-aria-components\"\nimport { cn } from \"@/lib/utils\"\n\ninterface InputNumberProps {\n  value?: number | string\n  onChange?: (value: number) => void\n  placeholder?: string\n  className?: string\n  unit?: string\n}\n\nexport function InputNumber({ value, onChange, placeholder, className, unit }: InputNumberProps) {\n  return (\n    <AriaNumberField\n      value={typeof value === 'string' ? (value === '' ? undefined : Number(value)) : value}\n      onChange={onChange}\n      className={className}\n    >\n      <Group className=\"border-input outline-none data-focus-within:border-ring data-focus-within:ring-ring/50 data-focus-within:has-aria-invalid:ring-destructive/20 dark:data-focus-within:has-aria-invalid:ring-destructive/40 data-focus-within:has-aria-invalid:border-destructive relative inline-flex h-9 w-full items-center overflow-hidden rounded-md border text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] data-disabled:opacity-50 data-focus-within:ring-[3px] bg-transparent dark:bg-input/30\">\n        <div className=\"relative flex-1\">\n          {unit && (\n            <div className=\"absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground z-10\">\n              {unit}\n            </div>\n          )}\n          <Input \n            placeholder={placeholder}\n            className={cn(\n              \"text-foreground flex-1 px-3 py-2 tabular-nums border-0 outline-none w-full bg-transparent placeholder:text-muted-foreground\",\n              unit && \"pl-8\"\n            )} \n          />\n        </div>\n        <div className=\"flex h-[calc(100%+2px)] flex-col\">\n          <Button\n            slot=\"increment\"\n            className=\"border-input text-muted-foreground/80 hover:bg-accent hover:text-foreground -me-px flex h-1/2 w-6 flex-1 items-center justify-center border text-sm transition-[color,box-shadow] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50\"\n          >\n            <ChevronUpIcon size={12} aria-hidden=\"true\" />\n          </Button>\n          <Button\n            slot=\"decrement\"\n            className=\"border-input text-muted-foreground/80 hover:bg-accent hover:text-foreground -me-px -mt-px flex h-1/2 w-6 flex-1 items-center justify-center border text-sm transition-[color,box-shadow] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50\"\n          >\n            <ChevronDownIcon size={12} aria-hidden=\"true\" />\n          </Button>\n        </div>\n      </Group>\n    </AriaNumberField>\n  )\n} ",
+      "type": "registry:component",
+      "target": "components/ui/input-number.tsx"
+    }
+  ]
+}
