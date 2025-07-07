@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { DataTableRowForm } from "./data-table-row-form"
 import { ColumnDef } from "@tanstack/react-table"
-import { Badge } from "../ui/badge"
+import { Badge } from "@/components/ui/badge"
 
 interface DataTableRowEditMultiProps<TData> {
   columns: ColumnDef<TData>[]
