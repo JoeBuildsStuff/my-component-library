@@ -30,7 +30,7 @@
     "separator",
     "calendar",
     "scroll-area",
-    "input-number"
+    "https://jt-components.vercel.app/r/input-number.json"
   ],
   "files": [
     {
