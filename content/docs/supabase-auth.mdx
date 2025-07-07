@@ -378,43 +378,6 @@ The auth system includes comprehensive server actions:
 - `requestPasswordReset()` - Request password reset
 - `updateUserPassword()` - Update user password
 
-## Features
-
-### 🔐 Multiple Authentication Methods
-- **Magic Links**: Passwordless authentication via email
-- **OTP Codes**: 6-digit verification codes
-- **Password Auth**: Traditional email/password
-- **OAuth**: Google and GitHub integration
-
-### 📱 Responsive Design
-- Mobile-first approach
-- Adaptive layouts for all screen sizes
-- Touch-friendly interface elements
-
-### 🛡️ Security Features
-- Rate limiting protection
-- Secure session management
-- CSRF protection
-- Input validation with Zod
-
-### 🎨 Modern UI
-- Built with shadcn/ui components
-- Consistent design system
-- Loading states and animations
-- Accessible form controls
-
-### 📧 Email Workflows
-- Email verification
-- Password reset emails
-- Magic link delivery
-- Custom email templates
-
-### 🔄 Error Handling
-- User-friendly error messages
-- Rate limit notifications
-- Validation feedback
-- Graceful fallbacks
-
 ## Customization
 
 ### Styling
@@ -543,33 +506,46 @@ export function useAuth() {
 }
 ```
 
-## Troubleshooting
+## FAQ
 
-### Common Issues
+Some common issues and solutions.
 
-**Magic links not working:**
-- Check your email templates in Supabase dashboard
-- Verify `NEXT_PUBLIC_SITE_URL` is correct
-- Check spam folder
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 
-**OAuth redirects failing:**
-- Verify redirect URLs in provider settings
-- Check environment variables
-- Ensure callback route is accessible
+<Accordions type="single">
 
-**Session not persisting:**
-- Verify middleware is configured correctly
-- Check cookie settings
-- Ensure server/client are using same domain
+<Accordion title="Environment Variables Error - Missing Supabase URL/Key">
 
-### Rate Limiting
+If you see this error in your terminal when trying to sign up or sign in:
 
-The system includes built-in rate limiting. Users will see friendly error messages when limits are exceeded:
-
-```tsx
-// Rate limit handling in auth actions
-if (error.code === 'over_email_send_rate_limit') {
-  redirect(`/signin?error=rate_limit&message=${encodeURIComponent(error.message)}`)
+```bash title="Error"
+https://supabase.com/dashboard/project/_/settings/api
+    at <unknown> (https://supabase.com/dashboard/project/_/settings/api)
+    at createClient (src/lib/supabase/server.ts:8:4)
+    at async signUpWithPassword (src/actions/auth.ts:184:19)
+   6 |
+   7 |   return createServerClient(
+>  8 |     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+     |    ^
+   9 |     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  10 |     {
+  11 |       cookies: { {
+  digest: '331674933'
 }
+ POST /signup/password 500 in 208ms
 ```
+
+**Solution:** Double-check your `.env.local` file and ensure you have the correct Supabase environment variables:
+
+```dotenv title=".env.local"
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+You can find these values in your [Supabase Dashboard > Settings > API](https://supabase.com/dashboard/project/_/settings/api).
+
+</Accordion>
+
+</Accordions>
 

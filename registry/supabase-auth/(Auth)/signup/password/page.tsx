@@ -82,20 +82,20 @@ export default async function SignupPage({
           </form>
 
           {/* passwordless option alert */}
-          <Alert variant={"default"} className="border-none">
-          <Mail className="" />
-          <AlertTitle className="text-sm">Password Option</AlertTitle>
-          <AlertDescription className="pt-2 space-y-2">
-          <span>
-            We recomend using a <Link
-              href="/signup"
-              className="text-primary underline hover:text-primary/80 transition-colors"
-            >
-              passwordless option.
-            </Link> 
-          </span>
-          </AlertDescription>
-        </Alert>
+          <Alert variant={"default"} className="bg-secondary/50 border-none">
+            <Mail className="" />
+            <AlertTitle className="text-sm">Password Option</AlertTitle>
+            <AlertDescription className="pt-2 space-y-2">
+            <span>
+              We recomend using a <Link
+                href="/signup"
+                className="text-primary underline hover:text-primary/80 transition-colors"
+              >
+                passwordless option.
+              </Link> 
+            </span>
+            </AlertDescription>
+          </Alert>
 
         {/* already have an account link */}
         <div className="text-center text-sm text-muted-foreground">

@@ -23,7 +23,7 @@ export default async function signinPage({
   const next = typeof nextParam === 'string' ? nextParam : null;
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div className="flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
 
         {/* card header */}
