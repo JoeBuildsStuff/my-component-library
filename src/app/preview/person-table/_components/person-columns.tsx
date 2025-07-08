@@ -36,10 +36,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     id: "display_name",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <IdCard className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Name" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Name" 
+        icon={<IdCard className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const firstName = row.original.first_name || ""
@@ -90,10 +91,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     id: "primary_email",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <AtSign className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Email" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Email" 
+        icon={<AtSign className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const emails = row.original.emails || []
@@ -122,10 +124,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     accessorKey: "description",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <Pilcrow className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Description" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Description" 
+        icon={<Pilcrow className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const description = row.getValue("description") as string
@@ -150,10 +153,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     id: "company_name",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <Building2 className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Company" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Company" 
+        icon={<Building2 className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const company = row.original.company
@@ -170,10 +174,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     accessorKey: "job_title",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <BriefcaseBusiness className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Title" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Title" 
+        icon={<BriefcaseBusiness className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const jobTitle = row.getValue("job_title") as string
@@ -189,10 +194,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     id: "primary_phone",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <Phone className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Phone" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Phone" 
+        icon={<Phone className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const phones = row.original.phones || []
@@ -221,10 +227,11 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     id: "location",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <MapPin className="size-4 shrink-0" strokeWidth={1.5} />
-        <DataTableColumnHeader column={column} title="Location" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="Location" 
+        icon={<MapPin className="size-4 shrink-0" strokeWidth={1.5} />}
+      />
     ),
     cell: ({ row }) => {
       const city = row.original.city || ""
@@ -245,12 +252,15 @@ export const columns: ColumnDef<PersonWithRelations>[] = [
   {
     accessorKey: "linkedin",
     header: ({ column }) => (
-      <div className="flex items-center gap-2">
-        <div className="border border-muted-foreground rounded size-4 flex items-center justify-center">
-          <span className="text-xs">in</span>
-        </div>
-        <DataTableColumnHeader column={column} title="LinkedIn" />
-      </div>
+      <DataTableColumnHeader 
+        column={column} 
+        title="LinkedIn" 
+        icon={
+          <div className="border border-muted-foreground rounded size-4 flex items-center justify-center">
+            <span className="text-xs">in</span>
+          </div>
+        }
+      />
     ),
     cell: ({ row }) => {
       const linkedin = row.getValue("linkedin") as string

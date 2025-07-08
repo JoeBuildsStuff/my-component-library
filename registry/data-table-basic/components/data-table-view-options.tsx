@@ -157,11 +157,10 @@ export function DataTableViewOptions<TData>({
           variant="outline"
           className="flex ml-auto"
         >
-          <Settings2 />
-          View
+          <Settings2 className="size-4 shrink-0" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="end">
+      <PopoverContent className="w-fit p-0" align="end">
         <Command>
           <CommandInput placeholder="Search columns..." />
           <CommandList>
